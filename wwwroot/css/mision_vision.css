@@ -1,0 +1,122 @@
+h2 {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.mission-vision {
+  padding: 0 40px;
+}
+
+.section-container {
+  display: flex;
+  flex-direction: row;
+  margin: 40px auto;
+  /* Centrar el contenedor horizontalmente */
+  max-width: 1650px;
+  /* Limitar el ancho máximo */
+  width: 100%;
+  /* Ocupa el 100% del ancho disponible hasta el máximo */
+}
+
+.section-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.section-text {
+  flex: 1;
+  padding: 0px 40px;
+}
+
+.section-text p {
+  font-size: 18px;
+}
+
+.section-text li {
+  font-size: 18px;
+}
+
+.section-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.section-image img {
+  box-shadow: 0 4px 8px #7d87f2;
+  max-width: 100%;
+  max-height: 300px;
+  /* Ajusta esta altura máxima según tus necesidades */
+  object-fit: cover;
+  /* Ajusta la imagen para que cubra el área sin distorsión */
+  border-radius: 10px;
+}
+
+.valoresUrbanX {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.valoresUrbanX li {
+  margin-bottom: 10px;
+}
+
+/* Estilos Responsivos */
+@media (max-width: 769px) {
+  .section-container {
+    flex-direction: column;
+    /* Apilar la imagen y el texto verticalmente en pantallas pequeñas */
+    text-align: center;
+    margin: 30px auto;
+  }
+
+  .section-text {
+    flex: 1;
+    padding: 0px 20px;
+    order: 1;
+    /* Asegura que el texto siempre esté antes de la imagen en pantallas pequeñas */
+  }
+
+  .section-content {
+    flex-direction: column;
+  }
+
+  .section-text .valoresUrbanX {
+    text-align: left;
+  }
+
+  .section-image {
+    order: 2;
+    /* Asegura que la imagen esté después del texto en pantallas pequeñas */
+  }
+
+  .section-image img {
+    width: 100%;
+    /* Ajustar imagen para que ocupe el ancho completo en pantallas pequeñas */
+    max-height: 300px;
+    /* Ajusta la altura máxima para pantallas pequeñas */
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 20px;
+  }
+
+  .section-text p {
+    font-size: 14px;
+  }
+
+  .section-text li {
+    font-size: 14px;
+  }
+
+  .section-image img {
+    width: 100%;
+    max-height: 250px;
+    /* Ajusta la altura máxima para pantallas muy pequeñas */
+  }
+}

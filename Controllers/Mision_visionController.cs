@@ -8,11 +8,11 @@ using Microsoft.Extensions.Logging;
 
 namespace urbanx.Controllers
 {
-    public class Aviso_legalController : Controller
+    public class Mision_visionController : Controller
     {
-        private readonly ILogger<Aviso_legalController> _logger;
+        private readonly ILogger<Mision_visionController> _logger;
 
-        public Aviso_legalController(ILogger<Aviso_legalController> logger)
+        public Mision_visionController(ILogger<Mision_visionController> logger)
         {
             _logger = logger;
         }
