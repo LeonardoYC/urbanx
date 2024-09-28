@@ -1,0 +1,45 @@
+@model UrbanX.Models.Contacto
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto</title>
+
+    <link rel="stylesheet" href="~/css/contacto.css" asp-append-version="true" />
+</head>
+<body>
+    <div id="contacto-wrapper">
+        <div id="contacto-container">
+            <h2>Contáctanos</h2>
+            <form id="contacto-form" class="diseño_border" asp-action="EnviarMensaje" method="post">
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label asp-for="Name">Nombre:</label>
+                        <input asp-for="Name" type="text">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label asp-for="Email">Correo Electrónico:</label>
+                        <input asp-for="Email" type="email" required>
+                    </div>
+                    <div class="form-group half-width">
+                        <label asp-for="Phone">Teléfono:</label>
+                        <input asp-for="Phone" type="tel">
+                    </div>
+                </div>
+                <div class="form-group full-width">
+                    <label asp-for="Message">Escribe tu Mensaje:</label>
+                    <textarea asp-for="Message" rows="6"></textarea>
+                </div>
+                <div class="form-group button-group">
+                    <button class="boton_contacto" type="submit">Enviar</button>
+                </div>
+            </form>
+            <h4 class="text-center">@ViewData["Message"]</h4>
+        </div>
+    </div>
+</body>
+</html>
