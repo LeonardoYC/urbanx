@@ -1,0 +1,113 @@
+@model UrbanX.Models.Producto
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar</title>
+
+    <link rel="stylesheet" href="~/css/editar_producto.css" asp-append-version="true" />
+</head>
+
+<body>
+    
+    <div class="container pb-3">
+        <h1>
+            UrbanX <small class="text-muted">Editar</small>
+        </h1>
+
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a asp-controller="Producto" asp-action="Index">Productos</a></li>
+            <li class="breadcrumb-item active">Editar Producto</li>
+        </ol>
+
+        <form asp-action="Edit" method="post" class="form">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3 row">
+                <label asp-for="Nombre" class="col-sm-2 col-form-label">Nombre:</label>
+                <div class="col-sm-10">
+                    <input asp-for="Nombre" class="form-control" placeholder="Ingrese el nombre del producto" required />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label asp-for="Descripcion" class="col-sm-2 col-form-label">Descripción:</label>
+                <div class="col-sm-10">
+                    <textarea asp-for="Descripcion" class="form-control" placeholder="Ingrese la descripción del producto" required></textarea>
+                    <span asp-validation-for="Descripcion" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label asp-for="Categoria" class="col-sm-2 col-form-label">Categoría:</label>
+                <div class="col-sm-10">
+                    <select asp-for="Categoria" class="form-select" required>
+                        <option value="" disabled selected>Seleccione una categoría</option>
+                        <option value="Camisetas">Camisetas</option>
+                        <option value="Pantalones">Pantalones</option>
+                        <option value="Sudaderas">Sudaderas</option>
+                        <option value="Abrigos">Abrigos</option>
+                    </select>
+                    <span asp-validation-for="Categoria" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label asp-for="Precio" class="col-sm-2 col-form-label">Precio:</label>
+                <div class="col-sm-10">
+                    <input asp-for="Precio" type="number" step="0.01" class="form-control" placeholder="Ingrese el precio del producto" required />
+                    <span asp-validation-for="Precio" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label asp-for="Cantidad" class="col-sm-2 col-form-label">Cantidad:</label>
+                <div class="col-sm-10">
+                    <input asp-for="Cantidad" type="number" class="form-control" placeholder="Ingrese la cantidad del producto" required />
+                    <span asp-validation-for="Cantidad" class="text-danger"></span>
+                </div>
+            </div>
+
+
+
+
+            <div class="mb-3 row">
+                <label asp-for="Estado" class="col-sm-2 col-form-label">Estado:</label>
+                <div class="col-sm-10">
+                    <select asp-for="Estado" class="form-select" required>
+                        <option value="" disabled selected>Estado del Producto</option>
+                        <option value="Stock">Stock</option>
+                        <option value="Agotado">Agotado</option>
+                    </select>
+                    <span asp-validation-for="Estado" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="mb-3 row">
+                <label asp-for="ImageURL" class="col-sm-2 col-form-label">Imagen:</label>
+                <div class="col-sm-10">
+                    <input asp-for="ImageURL" class="form-control" placeholder="Ingrese la URL de la imagen"/>
+                    <span asp-validation-for="ImageURL" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-10 offset-sm-2">
+                    <button type="submit" class="btn btn-success design_button me-2">Editar</button>
+                    <a class="btn btn-dark design_button" asp-action="Index">Regresar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
