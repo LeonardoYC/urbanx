@@ -9,4 +9,8 @@ public class ApplicationDbContext : IdentityDbContext
         : base(options)
     {
     }
-}
+
+    public DbSet<UrbanX.Models.Contacto> DataContacto { get; set; }
+    public DbSet<UrbanX.Models.Producto> DataProducto { get; set; }
+    
+    }
