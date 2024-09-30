@@ -1,0 +1,85 @@
+@model UrbanX.Models.Producto
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar</title>
+</head>
+<style>
+    .design_button {
+    box-shadow: none !important;
+}
+</style>
+<body>
+    
+
+    <div class="container pb-3">
+        <h1 class="mb-3">Urban X <small class="text-muted">Eliminar</small></h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Producto" asp-action="Index">Productos</a></li>
+            <li class="breadcrumb-item active">Eliminar Producto</li>
+        </ol>
+
+        <div>
+            <dl class="row">
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Nombre)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Descripcion)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Descripcion)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Categoria)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Categoria)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Precio)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Precio)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Cantidad)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Cantidad)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Estado)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Estado)
+                </dd>
+
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.ImageURL)
+                </dt>
+                <dd class = "col-sm-10">
+                    <img src="@Html.DisplayFor(model => model.ImageURL)" class="d-block image-fit" style="width: 200px;">
+                </dd>
+            </dl>
+            
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Eliminar" class="btn btn-danger design_button" />
+                <a class="btn btn-dark design_button" asp-action="Index">Volver</a>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+</html>
