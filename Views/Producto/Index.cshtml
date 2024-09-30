@@ -1,0 +1,78 @@
+@model IEnumerable<UrbanX.Models.Producto>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producto</title>
+    <link rel="stylesheet" href="~/css/vista_productos.css" asp-append-version="true" />
+
+    <!-- Estilos de iconos-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Fuente de Letra-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-3">Urban X <small class="text-muted">Productos</small></h1>
+
+        <a class="btn btn-dark mb-3" asp-action="Create">Agregar Producto</a>
+
+		<div class="card mb-4 table-responsive">
+			<div class="card-body">
+				
+				<div class="row">
+					<div class="col-sm-12">
+						<table class="table">
+							<thead>
+								<tr>
+                                    <th >@Html.DisplayNameFor(model => model.Nombre)</th>
+                                    <th>@Html.DisplayNameFor(model => model.Precio)</th>
+                                    <th>@Html.DisplayNameFor(model => model.Categoria)</th>
+                                    <th>@Html.DisplayNameFor(model => model.Cantidad)</th>
+                                    <th>@Html.DisplayNameFor(model => model.Estado)</th>
+                                    <th>Imagen</th>
+                                    <th class="text-center">Acción</th>
+                                    <th class="text-center">Acción</th>
+                                    <th class="text-center">Acción</th>
+								</tr>
+							</thead>
+                            <tbody>
+                                @foreach (var item in Model) {
+                                    <tr>
+                                        <td class="align-middle">@Html.DisplayFor(modelItem => item.Nombre)</td>
+                                        <td class="align-middle">@Html.DisplayFor(modelItem => item.Precio)</td>
+                                        <td class="align-middle">@Html.DisplayFor(modelItem => item.Categoria)</td>
+                                        <td class="align-middle">@Html.DisplayFor(modelItem => item.Cantidad)</td>
+                                        <td class="align-middle">@Html.DisplayFor(modelItem => item.Estado)</td>
+                                        <td class="align-middle">
+                                            <img src="@item.ImageURL" class="img-fluid" style="max-height: 50px;">
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <a class="btn btn-edit" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <a class="btn btn-details" asp-action="Details" asp-route-id="@item.Id">Detalles</a>
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <a class="btn btn-delete" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                                        </td>
+                                    </tr>
+                                }
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+
+
+    </div>
+</body>
+</html>
