@@ -1,0 +1,78 @@
+#ubicacion-wrapper {
+  width: 100%;
+  background-color: #ffffff;
+  /* Color de fondo del contenedor completo */
+  padding: 2rem;
+}
+
+#ubicacion-container {
+  width: 1650px;
+  width: 100%;
+  margin: 0 auto;
+  /* Centra el contenedor horizontalmente */
+  background-color: #fff;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#ubicacion-texto {
+  max-width: 60%;
+  /* Limita el ancho del texto para no ocupar demasiado espacio */
+}
+
+#ubicacion-texto h2 {
+  font-size: 40px;
+  margin-bottom: 1rem;
+  text-align: center;
+  /* Centra el título horizontalmente dentro del bloque de texto */
+}
+
+#ubicacion-texto p {
+  font-size: 20px;
+  color: #333;
+  margin: 1rem 0;
+}
+
+#ubicacion-imagen {
+  width: 100%;
+  max-width: 600px;
+  /* Tamaño máximo de la imagen */
+  height: auto;
+  /* Ajusta la altura automáticamente para mantener la proporción */
+  border-radius: 12px;
+  object-fit: cover;
+  /* Ajusta la imagen para que cubra el contenedor sin deformarse */
+}
+
+/* Responsive design */
+@media (max-width: 1650px) {
+  #ubicacion-container {
+    width: 90%;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  #ubicacion-texto {
+    max-width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  #ubicacion-imagen {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  #ubicacion-container h2 {
+    font-size: 1.5rem;
+  }
+
+  #ubicacion-container p {
+    font-size: 0.9rem;
+  }
+}
