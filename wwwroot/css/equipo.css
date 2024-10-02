@@ -1,0 +1,120 @@
+#equipo {
+    padding: 2rem 2rem 0.5rem 2rem;
+    background-color: #f5f5f5;
+    text-align: center;
+}
+
+.team-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 columnas por defecto */
+    gap: 1rem;
+    /* Espacio entre elementos */
+}
+
+.team-member {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    /* Centra los elementos hijos horizontalmente */
+    justify-content: center;
+    /* Centra los elementos hijos verticalmente */
+}
+
+.team-member:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.team-photo {
+    width: 350px;
+    /* Tamaño fijo de las imágenes */
+    height: 350px;
+    /* Tamaño fijo de las imágenes */
+    border-radius: 50%;
+    /* Imágenes circulares */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.team-member:hover .team-photo {
+    transform: scale(1.1);
+}
+
+.team-container h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.team-container h3 {
+    font-size: 1.5rem;
+    margin: 25px 0px 10px 0px;
+}
+
+.team-container p {
+    font-size: 1rem;
+    color: #333;
+}
+
+.equipo_p {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 1200px) {
+    .team-container {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columnas */
+    }
+
+    .team-photo {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+@media (max-width: 900px) {
+    .team-container {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columnas */
+    }
+
+    .team-photo {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media (max-width: 600px) {
+    .team-container {
+        grid-template-columns: 1fr;
+        /* 1 columna */
+    }
+
+    .team-photo {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+@media (max-width: 400px) {
+    .team-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .team-container h3 {
+        font-size: 1.2rem;
+    }
+
+    .team-container p {
+        font-size: 0.9rem;
+    }
+}
