@@ -1,0 +1,110 @@
+@model urbanx.Models.Carrito
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar</title>
+
+        <link rel="stylesheet" href="~/css/edit_carrito.css" asp-append-version="true" />
+    <script src="~/js/catalogo_detalle.js" ></script>
+</head>
+<body>
+    <div class="container mb-4">
+        <h1 class="mb-3">Urban X <small class="text-muted">Editar</small></h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-area="" asp-controller="Carrito" asp-action="Index">Carrito</a></li>
+            <li class="breadcrumb-item active">Editar Producto</li>
+        </ol>
+
+        <div class="col-sm-4 m-0 mt-3 mt-sm-3 mt-md-0 p-0">
+
+                <form asp-controller="Carrito" asp-action="Edit" method="post" id="formCarrito">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="UserID" />
+                    <input type="hidden" asp-for="Precio" />
+
+                    <!-- Campo para Talla -->
+                    <div class="mb-3">
+                        <label for="Talla" class="form-label texto_detalle_producto">Talla:</label>
+                        <div class="d-flex mb-2">
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="radio" name="Talla" id="tallaS" value="S" required>
+                                <label class="form-check-label" for="tallaS">S</label>
+                            </div>
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="radio" name="Talla" id="tallaM" value="M" required>
+                                <label class="form-check-label" for="tallaM">M</label>
+                            </div>
+                            <div class="form-check me-3">
+                                <input class="form-check-input" type="radio" name="Talla" id="tallaL" value="L" required>
+                                <label class="form-check-label" for="tallaL">L</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="Talla" id="tallaXL" value="XL" required>
+                                <label class="form-check-label" for="tallaXL">XL</label>
+                            </div>
+                        </div>
+                        <span validation-for="Talla" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cantidad" class="form-label texto_detalle_producto">Cantidad:</label>
+                        <div class="quantity-wrapper">
+                            <span class="minus">-</span>
+                            <input type="number" id="cantidad" name="cantidad" class="form-control" value="1" min="1" required>
+                            <span class="plus">+</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group d-flex">
+                        <button type="submit" id="btnGuardar" class="btn btn-primary me-2" disabled>Guardar</button>
+                        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+                    </div>
+                </form>
+        </div>
+
+    
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+
+    <!-- Habilitar boton y desabilitar -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tallaRadios = document.querySelectorAll('input[name="Talla"]');
+            const btnGuardar = document.getElementById('btnGuardar');
+            
+
+            function verificarSeleccion() {
+                let seleccionado = false;
+                
+
+                tallaRadios.forEach(radio => {
+                    if (radio.checked) {
+                        seleccionado = true;
+                    }
+                });
+
+                btnGuardar.disabled = !seleccionado;
+            }
+
+            tallaRadios.forEach(radio => {
+                radio.addEventListener('change', verificarSeleccion);
+            });
+
+
+            verificarSeleccion();
+        });
+    </script>
+    
+</body>
+</html>

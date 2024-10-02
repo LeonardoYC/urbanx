@@ -1,0 +1,14 @@
+.container input:focus,
+.container textarea:focus,
+.container select:focus {
+    box-shadow: none;
+    border-color: #7d87f2;
+}
+
+.container textarea {
+    resize: none;
+}
+
+.design_button {
+    box-shadow: none !important;
+}

@@ -1,0 +1,59 @@
+    /* Estilos personalizados para la tabla */
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table-vertical {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .table-vertical table {
+        width: 100%;
+        /* Asegúrate de que ambas tablas ocupen el ancho completo */
+        margin-bottom: 0;
+        /* Elimina el margen inferior */
+    }
+
+    .btn-edit {
+        background-color: #28a745;
+        /* Cambia por tu color */
+        color: #fff;
+    }
+
+    .btn-details {
+        background-color: #fd7e14;
+        /* Cambia por tu color */
+        color: #fff;
+    }
+
+    .btn-delete {
+        background-color: #dc3545;
+        /* Cambia por tu color */
+        color: #fff;
+    }
+
+    /* Alineación vertical y otros estilos */
+    .align-middle {
+        vertical-align: middle !important;
+    }
+
+    .container .btn:focus {
+        outline: none;
+        /* Elimina el contorno */
+        box-shadow: none;
+        /* Elimina cualquier sombra */
+    }
+
+    /* Estilos responsivos para pantallas menores a 1200px */
+    @media (max-width: 1200px) {
+        .table-vertical {
+            flex-direction: row;
+            /* Cambia a dirección horizontal */
+        }
+
+        .table-vertical table {
+            flex: 1;
+            /* Cada tabla toma el mismo espacio */
+        }
+    }

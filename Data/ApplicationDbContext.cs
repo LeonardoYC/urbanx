@@ -10,7 +10,8 @@ public class ApplicationDbContext : IdentityDbContext
     {
     }
 
-    public DbSet<UrbanX.Models.Contacto> DataContacto { get; set; }
-    public DbSet<UrbanX.Models.Producto> DataProducto { get; set; }
+    public DbSet<urbanx.Models.Contacto> DataContacto {get; set; }
+    public DbSet<urbanx.Models.Producto> DataProducto {get; set; }
+    public DbSet<urbanx.Models.Carrito> DataItemCarrito {get; set; }
     
     }

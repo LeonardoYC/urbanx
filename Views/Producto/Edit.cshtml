@@ -1,4 +1,4 @@
-@model UrbanX.Models.Producto
+@model urbanx.Models.Producto
 @{
     ViewData["Title"] = "Edit";
 }
@@ -109,5 +109,8 @@
         </form>
     </div>
 
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
 </body>
 </html>

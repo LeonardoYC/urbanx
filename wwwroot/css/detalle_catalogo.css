@@ -1,0 +1,147 @@
+.contenedor {
+    width: 100%;
+    border-radius: 5px;
+    background: #0F0E17;
+    color: #fff;
+    padding: 20px;
+}
+
+
+.detalles_imagen {
+    height: 500px;
+    width: 500px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.card-title {
+    font-size: 1.5em;
+}
+
+.card-text,
+.texto_detalle_producto {
+    font-size: 1.4em;
+}
+
+.form-select,
+.form-control {
+    border-radius: 5px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.btn-añadir {
+    background-color: #00c6c4;
+    box-shadow: none !important;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.btn-añadir:hover {
+    background-color: #37d5b8;
+}
+
+
+
+
+.btn-comprar {
+    background-color: #FF8906;
+    font-size: 18px;
+    font-weight: 500;
+    box-shadow: none !important;
+    color: #fff;
+    margin-left: 10px;
+    /* Espacio a la izquierda del botón Comprar */
+}
+
+.btn-comprar:hover {
+    background-color: #fd5b5d;
+}
+
+/* Estilos para los check buttons */
+.form-check:first-child {
+    padding-left: 0;
+}
+
+.form-check-input {
+    display: none;
+}
+
+.form-check {
+    position: relative;
+}
+
+.form-check-label {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #000;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.form-check-input:checked+.form-check-label {
+    background-color: orange;
+    border: 2px solid orange;
+}
+
+.form-check-input:checked+.form-check-label:hover {
+    background-color: #e67e22;
+    border-color: #e67e22;
+}
+
+.quantity-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-wrapper input {
+    width: 60px;
+    text-align: center;
+    margin: 0 10px;
+    height: 40px;
+}
+
+.quantity-wrapper input:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #7d87f2;
+}
+
+.quantity-wrapper input::-webkit-outer-spin-button,
+.quantity-wrapper input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.quantity-wrapper span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 35px;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    user-select: none;
+    padding-bottom: 6px;
+}
+
+.quantity-wrapper span:hover {
+    background-color: #FF2E63;
+}
+
+.quantity-wrapper span:active {
+    background-color: #790003;
+}

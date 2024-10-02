@@ -1,0 +1,26 @@
+.form-group {
+    margin-bottom: 10px;
+    /* Ajusta el valor según tus preferencias */
+}
+
+
+.container input:focus,
+.container select:focus,
+.container textarea:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #7d87f2;
+
+}
+
+.container textarea {
+    resize: none;
+    /* Quita la opción de redimensionar */
+}
+
+
+.design_button {
+    box-shadow: none !important;
+}
+
+/* Quitar el borde por defecto */
