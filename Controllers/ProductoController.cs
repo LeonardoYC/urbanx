@@ -10,8 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using urbanx.Data;
 using urbanx.Models;
 using urbanx.Service;
-using UrbanX.Models;
-
 
 namespace urbanx.Controllers
 {
