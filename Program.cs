@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using urbanx.Data;
+using urbanx.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 /* Add services to the container.
@@ -21,6 +22,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+//Registro mi logica 
+builder.Services.AddScoped<ProductoService, ProductoService>();
 
 builder.Services.AddSession(options =>
 {

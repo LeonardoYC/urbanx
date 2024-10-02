@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using urbanx.Data;
 using urbanx.Models;
-using UrbanX.Models;
+using urbanx.Data;
 
 namespace urbanx.Service
 {

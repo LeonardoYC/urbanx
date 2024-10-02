@@ -1,0 +1,58 @@
+.buscador_productos:focus {
+    box-shadow: none !important;
+    border-color: #7d87f2;
+}
+
+.boton_buscar {
+    background: #7486ff;
+    box-shadow: none !important;
+    color: #fff;
+}
+
+.card {
+    background-color: #0f0e17;
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card img.image-fit {
+    height: 280px;
+    border-radius: 5px;
+    object-fit: cover;
+
+}
+
+.card .btn-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.boton_agregar {
+    background: #00c6c4;
+    font-weight: 500;
+    box-shadow: none !important;
+    color: #fff;
+}
+
+.boton_ver {
+    background: #5aecc1;
+    font-weight: 500;
+    box-shadow: none !important;
+    color: #000;
+}
+
+.boton_ver:hover {
+    color: #fff;
+}
