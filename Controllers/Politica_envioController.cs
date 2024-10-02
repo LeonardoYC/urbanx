@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace UrbanX.Controllers
+namespace urbanx.Controllers
 {
 
     public class Politica_envioController : Controller
