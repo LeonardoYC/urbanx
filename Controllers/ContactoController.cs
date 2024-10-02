@@ -7,9 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using urbanx.Data;
 using urbanx.Models;
-using UrbanX.Models;
 
-namespace UrbanX.Controllers
+namespace urbanx.Controllers
 {
 
     public class ContactoController : Controller
