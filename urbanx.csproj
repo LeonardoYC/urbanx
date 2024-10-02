@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-urbanx-313c8b48-c6df-461a-b87d-61075ef946ad</UserSecretsId>
+    <Version>1.0.23</Version>
   </PropertyGroup>
 
   <ItemGroup>
