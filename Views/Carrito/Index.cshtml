@@ -1,0 +1,77 @@
+@model dynamic;
+@using System.Collections.Generic;
+
+@{
+    ViewData["Title"] = "Carrito";
+    IEnumerable<urbanx.Models.Carrito> listItemsCarrito = new List<Carrito>();
+    listItemsCarrito = @Model.elementosCarrito;
+    Decimal montoTotal = @Model.montoTotal;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito</title>
+</head>
+
+<body>
+
+<div class="container">
+    <h1 class="mb-3">
+        Urban X <small class="text-muted">@ViewData["Title"]</small>
+    </h1>
+
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-area="" asp-controller="Catalogo" asp-action="Index">Catalogo</a></li>
+        <li class="breadcrumb-item active">Carrito</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-9 table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Imagen</th>
+                                <th scope="col">@Html.DisplayNameFor(model => listItemsCarrito.FirstOrDefault().Producto.Nombre)</th>
+                                <th scope="col">@Html.DisplayNameFor(model => listItemsCarrito.FirstOrDefault().Cantidad)</th>
+                                <th scope="col">Talla</th> <!-- Nueva columna para la talla -->
+                                <th scope="col">Total</th>
+                                <th scope="col">Acción</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Carrito item in Model.elementosCarrito) {
+                                <tr>
+                                    <td class="align-middle"><img src="@item.Producto.ImageURL" class="d-block image-fit" style="height: 50px;"></td>
+                                    <td class="align-middle">@Html.DisplayFor(modelItem => item.Producto.Nombre)</td>
+                                    <td class="align-middle">@Html.DisplayFor(modelItem => item.Cantidad)</td>
+                                    <td class="align-middle">@Html.DisplayFor(modelItem => item.Talla)</td> <!-- Mostrar talla -->
+                                    <td class="align-middle">@Html.DisplayFor(modelItem => item.Precio)</td>
+                                    <td class="align-middle"><a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id">Editar</a></td>
+                                    <td class="align-middle"><a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-lg-3">
+                    <h2 class="card-title">SUBTOTAL</h2>
+
+                    <ul class="list-group">
+                        <li class="list-group-item"><h5>S/. @montoTotal</h5></li>
+                        <a class="btn btn-dark" asp-controller="Pago" asp-action="Create" asp-route-monto="@montoTotal">Pagar Ahora</a>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
