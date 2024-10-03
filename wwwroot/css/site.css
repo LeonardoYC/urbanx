@@ -1,22 +1,340 @@
-html {
-  font-size: 14px;
+.contenedor_menu .logo-contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
+
+.contenedor_menu .logo-contenedor a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.contenedor_menu .logo-contenedor img {
+  max-width: 140px;
+  height: auto;
+}
+
+
+
+.contenedor_menu .enlances_links_1 {
+  display: inline-flex;
+}
+
+.contenedor_menu .enlances_links_2 {
+  display: inline-flex;
+}
+
+.enlances_links_1 {
+  margin-bottom: 0;
+}
+
+.enlances_links_2 {
+  margin-bottom: 0;
+}
+
+
+.enlances_links_1 li {
+  list-style: none;
+}
+
+.enlances_links_2 li {
+  list-style: none;
+}
+
+.enlances_links_1 li a {
+  color: #f2f2f2;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.enlances_links_1 .itmes_menu a:hover {
+  background: #e53170;
+}
+
+.contenedor_menu .boton_registrar a:hover {
+  background: #ff8906;
+  color: #000;
+}
+
+.contenedor_menu .boton_login a:hover {
+  background: #ff8906;
+  color: #000;
+}
+
+.enlances_links_2 li a {
+  color: #f2f2f2;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.enlances_links_1 .mobile-item {
+  display: none;
+}
+
+.enlances_links_1 .drop-menu {
+  position: absolute;
+  background: #0f0e17;
+  width: 180px;
+  line-height: 45px;
+  top: 85px;
+  opacity: 0;
+  visibility: hidden;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.enlances_links_1 li:hover .drop-menu {
+  transition: all 0.3s ease;
+  top: 65px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.drop-menu li a {
+  width: 100%;
+  display: block;
+  padding: 0 0 0 15px;
+  font-weight: 400;
+  border-radius: 0px;
+}
+
+
+.contenedor_menu .btn {
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: none;
+}
+
+.contenedor_menu .btn.close-btn {
+  position: absolute;
+  right: 30px;
+  top: 10px;
+}
+
+.contenedor_menu .buscador_celular {
+  display: none;
+}
+
+.contenedor_menu .opciones_celular_2 {
+  display: none;
+}
+
+.caja_buscador {
+  display: none;
+}
+
+@media screen and (max-width: 1210px) {
+  .caja_buscador {
+      position: absolute;
+      right: 230px;
+      height: 100%;
+      padding: 0px;
+      max-width: 400px;
+      width: 100%;
+      transition: all 0.2s linear;
+      opacity: 0;
+      /* Inicialmente invisible */
+  }
+
+  header .caja_buscador.show {
+      display: block;
+      /* Muestra el div */
+      opacity: 1;
+      /* Aumenta la opacidad al 100% */
+  }
+
+  header .caja_buscador {
+      top: calc(100% + 10px);
+      max-width: calc(100% - 35px);
+      right: 50%;
+      transform: translateX(50%);
+  }
+
+  .caja_buscador .buscador_celular {
+      position: absolute;
+      top: 24px;
+      left: 15px;
+      color: #000 !important;
+      transform: translateX(-25%);
+      z-index: 10;
+  }
+
+  header .caja_buscador .input-buscador {
+      width: 100%;
+      height: 45px;
+      padding: 10px 40px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      position: relative;
+      border-radius: 6px;
+      z-index: 9;
+      box-shadow: 0 2px 8px rgba(15, 14, 23, 0.2), 0 4px 15px rgba(15, 14, 23, 0.1);
+  }
+
+
+
+  .contenedor_menu .enlances_links_2 {
+      display: none;
+  }
+
+  .contenedor_menu .buscador_celular {
+      color: #fff;
+      font-size: 20px;
+      display: block;
+  }
+
+  .contenedor_menu .btn {
+      display: block;
+  }
+
+  .contenedor_menu .opciones_celular_2 {
+      display: block;
+  }
+
+
+  .contenedor_menu .enlances_links_1 {
+      position: absolute;
+      height: 100vh;
+      width: 100%;
+      max-width: 350px;
+      top: 0;
+      left: -100%;
+      background: #0f0e17;
+      display: block;
+      padding: 50px 10px;
+      line-height: 50px;
+      overflow-y: auto;
+      box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.18);
+      transition: all 0.3s ease;
+  }
+
+  /* custom scroll bar */
+  ::-webkit-scrollbar {
+      width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+      background: #242526;
+  }
+
+  ::-webkit-scrollbar-thumb {
+      background: #3A3B3C;
+  }
+
+
+
+  #menu-btn:checked~.enlances_links_1 {
+      left: 0%;
+  }
+
+  #menu-btn:checked~.btn.menu-btn {
+      display: none;
+  }
+
+  #close-btn:checked~.btn.menu-btn {
+      display: block;
+  }
+
+  .enlances_links_1 li {
+      margin: 15px 10px;
+  }
+
+  .enlances_links_1 li a {
+      padding: 0 20px;
+      display: block;
+      font-size: 20px;
+  }
+
+
+
+  .enlances_links_1 .drop-menu {
+      position: static;
+      opacity: 1;
+      top: 65px;
+      visibility: visible;
+      padding-left: 20px;
+      width: 100%;
+      max-height: 0px;
+      overflow: hidden;
+      box-shadow: none;
+      transition: all 0.3s ease;
+  }
+
+  #showDrop:checked~.drop-menu {
+      max-height: 100%;
+  }
+
+  .enlances_links_1 .desktop-item {
+      display: none;
+  }
+
+  .enlances_links_1 .mobile-item {
+      display: block;
+      color: #f2f2f2;
+      font-size: 20px;
+      font-weight: 500;
+      padding-left: 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+  }
+
+  .enlances_links_1 .mobile-item:hover {
+      background: #e53170;
+  }
+
+  .drop-menu li {
+      margin: 0;
+  }
+
+  .drop-menu li a {
+      border-radius: 5px;
+      font-size: 18px;
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+
+
+
+
+
+.contenido-footer .links-boxes .box li a {
+  color: white;
+  text-decoration: none;
+  font: 14px;
+  font-weight: 400;
+  opacity: 0.8;
+  transition: all 0.4s ease;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.contenido-footer .links-boxes .box li a:hover {
+  opacity: 1;
+  text-decoration: underline;
 }
 
-body {
-  margin-bottom: 60px;
+.bottom-details .bottom_text .opcion_principal,
+.bottom-details .bottom_text a {
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+.bottom-details .bottom_text a:hover {
+  opacity: 1;
+  text-decoration: underline;
 }
