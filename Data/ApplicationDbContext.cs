@@ -13,5 +13,6 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<urbanx.Models.Contacto> DataContacto {get; set; }
     public DbSet<urbanx.Models.Producto> DataProducto {get; set; }
     public DbSet<urbanx.Models.Carrito> DataItemCarrito {get; set; }
+    public DbSet<urbanx.Models.Pedido> Pedido  {get; set; }
     
     }
