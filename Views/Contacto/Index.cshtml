@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
 
     <link rel="stylesheet" href="~/css/contacto.css" asp-append-version="true" />
 </head>
+
 <body>
     <div id="contacto-wrapper">
         <div id="contacto-container">
@@ -17,7 +19,7 @@
                 <div class="form-row">
                     <div class="form-group full-width">
                         <label asp-for="Name">Nombre:</label>
-                        <input asp-for="Name" type="text">
+                        <input asp-for="Name" type="text" required>
                     </div>
                 </div>
                 <div class="form-row">
@@ -38,8 +40,26 @@
                     <button class="boton_contacto" type="submit">Enviar</button>
                 </div>
             </form>
-            <h4 class="text-center">@ViewData["Message"]</h4>
+
+            @if (!string.IsNullOrEmpty(ViewData["Message"]?.ToString()))
+            {
+                if (ViewData["Message"].ToString().Contains("exitosamente"))
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <h4 class="text-center">@ViewData["Message"]</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <h4 class="text-center">@ViewData["Message"]</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+            }
         </div>
     </div>
 </body>
+
 </html>

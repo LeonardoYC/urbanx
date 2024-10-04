@@ -14,7 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 var connectionString = builder.Configuration.GetConnectionString("PostgreSQLConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
-    
+
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -25,6 +25,8 @@ builder.Services.AddControllersWithViews();
 
 //Registro mi logica 
 builder.Services.AddScoped<ProductoService, ProductoService>();
+//Contacto con Formspree
+builder.Services.AddHttpClient();
 
 builder.Services.AddSession(options =>
 {
