@@ -1,74 +1,41 @@
-@model IEnumerable<urbanx.Models.Producto>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Producto</title>
-    <link rel="stylesheet" href="~/css/vista_productos.css" asp-append-version="true" />
+    <title>Equipo</title>
 
-    <!-- Estilos de iconos-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+    <link rel="stylesheet" href="~/css/equipo.css" asp-append-version="true" />
+
 </head>
 <body>
-    <div class="container">
-        <h1 class="mb-3">Urban X <small class="text-muted">Productos</small></h1>
 
-        <a class="btn btn-dark mb-3" asp-action="Create">Agregar Producto</a>
-
-		<div class="card mb-4 table-responsive">
-			<div class="card-body">
-				
-				<div class="row">
-					<div class="col-sm-12">
-						<table class="table">
-							<thead>
-								<tr>
-                                    <th >@Html.DisplayNameFor(model => model.Nombre)</th>
-                                    <th>@Html.DisplayNameFor(model => model.Precio)</th>
-                                    <th>@Html.DisplayNameFor(model => model.Categoria)</th>
-                                    <th>@Html.DisplayNameFor(model => model.Cantidad)</th>
-                                    <th>@Html.DisplayNameFor(model => model.Estado)</th>
-                                    <th>Imagen</th>
-                                    <th class="text-center">Acción</th>
-                                    <th class="text-center">Acción</th>
-                                    <th class="text-center">Acción</th>
-								</tr>
-							</thead>
-                            <tbody>
-                                @foreach (var item in Model) {
-                                    <tr>
-                                        <td class="align-middle">@Html.DisplayFor(modelItem => item.Nombre)</td>
-                                        <td class="align-middle">@Html.DisplayFor(modelItem => item.Precio)</td>
-                                        <td class="align-middle">@Html.DisplayFor(modelItem => item.Categoria)</td>
-                                        <td class="align-middle">@Html.DisplayFor(modelItem => item.Cantidad)</td>
-                                        <td class="align-middle">@Html.DisplayFor(modelItem => item.Estado)</td>
-                                        <td class="align-middle">
-                                            <img src="@item.ImageURL" class="img-fluid" style="max-height: 50px;">
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            <a class="btn btn-edit" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            <a class="btn btn-details" asp-action="Details" asp-route-id="@item.Id">Detalles</a>
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            <a class="btn btn-delete" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
-                                        </td>
-                                    </tr>
-                                }
-							</tbody>
-						</table>
-					</div>
-
-				</div>
-			</div>
-		</div>
-
-
-
-
-    </div>
+    <section id="equipo">
+        <h2>Conoce a Nuestro Equipo</h2>
+        <div class="team-container">
+            <div class="team-member">
+                <img src="/images/Leonardo.jpeg" alt="Leonardo" class="team-photo" />
+                <h3>Leonardo</h3>
+                <p>Como líder del grupo, Leonardo supervisa todos los aspectos del desarrollo, asegurando que cada detalle de nuestra plataforma funcione a la perfección. Desarrollador full stack para ofrecer una experiencia de usuario impecable.</p>
+            </div>
+            <div class="team-member">
+                <img src="/images/julio.jpg" alt="Julio" class="team-photo" />
+                <h3>Julio</h3>
+                <p>Se encarga de la lógica del servidor y la gestión de bases de datos. Su habilidad para construir sistemas robustos y eficientes garantiza que nuestra tienda funcione sin problemas y que tus datos estén seguros.</p>
+            </div>
+            <div class="team-member">
+                <img src="/images/lazaro.jpg" alt="Jesús" class="team-photo" />
+                <h3>Jesús</h3>
+                <p>Da vida a nuestra tienda con su habilidad en el desarrollo frontend. Su enfoque en el diseño y la usabilidad asegura que la interfaz de usuario sea atractiva y fácil de navegar, proporcionando una experiencia visual fluida.</p>
+            </div>
+            <div class="team-member">
+                <img src="/images/lobaton.png" alt="Lobatón" class="team-photo" />
+                <h3>Lobatón</h3>
+                <p>Combina habilidades en frontend y backend para crear una integración perfecta entre la apariencia de nuestra tienda y su funcionalidad. Su versatilidad le permite abordar múltiples desafíos técnicos, contribuyendo significativamente al éxito de UrbanX.</p>
+            </div>
+        </div>
+        <p class="equipo_p">Juntos, trabajamos para ofrecerte lo mejor en moda urbana con un sitio web que no solo es visualmente impresionante, sino también funcional y fácil de usar. ¡Gracias por ser parte de nuestra comunidad!</p>
+    </section>
+    
 </body>
 </html>
