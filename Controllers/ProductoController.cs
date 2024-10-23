@@ -33,7 +33,7 @@ namespace urbanx.Controllers
                         View(productos) :
                         Problem("Entity set 'ApplicationDbContext.DataProductos'  is null.");
         }
-
+//COMENZANDO IMPLEMENTACION BADGE
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
