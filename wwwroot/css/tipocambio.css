@@ -1,0 +1,62 @@
+/* Contenedor principal */
+.container {
+  padding: 20px;
+  border-radius: 15px;
+}
+
+/* Título */
+h1.text-center {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #4a90e2;
+}
+
+/* Etiquetas y campos del formulario */
+.form-group label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #666;
+}
+
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease-in-out;
+}
+
+/* Ajuste de espaciado del botón */
+.form-group.text-center {
+  margin-top: 20px;
+  /* Añade margen superior para separarlo de los campos anteriores */
+}
+
+.form-control:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+  outline: none;
+}
+
+/* Botón de enviar */
+.botonCambio {
+  background-color: #4a90e2;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.botonCambio:hover {
+  background-color: #357abd;
+}
+
+/* Texto del resultado */
+.tituloCambio {
+  font-size: 1.5rem;
+  color: #333;
+  margin-top: 20px;
+}
