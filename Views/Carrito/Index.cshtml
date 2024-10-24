@@ -1,9 +1,19 @@
-@model IAsyncEnumerable<urbanx.Models.Carrito>;
+@model IEnumerable<urbanx.Models.Carrito>;
 @using System.Collections.Generic;
 
 @{
     ViewData["Title"] = "Carrito";
+
+
+
+    // El modelo ya es de tipo IEnumerable<Carrito>, no necesitas convertirlo.
+
     IEnumerable<urbanx.Models.Carrito> listItemsCarrito = Model;
+
+
+
+    // Obtener el monto total desde ViewData.
+
     Decimal montoTotal = ViewData["MontoTotal"] != null ? (Decimal)ViewData["MontoTotal"] : 0;
 }
 

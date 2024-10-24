@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using urbanx.Service;
 
-
-namespace urbanx.ViewComponent;
+namespace urban_leo.ViewComponents
 {
     public class CartBadgeViewComponent : ViewComponent
     {
@@ -19,4 +18,3 @@ namespace urbanx.ViewComponent;
         }
     }
 }
-
