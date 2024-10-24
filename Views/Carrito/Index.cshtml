@@ -1,23 +1,49 @@
-@model dynamic;
+@model IAsyncEnumerable<urbanx.Models.Carrito>;
 @using System.Collections.Generic;
 
 @{
     ViewData["Title"] = "Carrito";
-    IEnumerable<urbanx.Models.Carrito> listItemsCarrito = new List<Carrito>();
-    listItemsCarrito = @Model.elementosCarrito;
-    Decimal montoTotal = @Model.montoTotal;
+    IEnumerable<urbanx.Models.Carrito> listItemsCarrito = Model;
+    Decimal montoTotal = ViewData["MontoTotal"] != null ? (Decimal)ViewData["MontoTotal"] : 0;
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito</title>
-</head>
+<style>
+    .size-selector {
+        margin: 10px 0;
+    }
 
-<body>
+    .size-options {
+        display: flex;
+        gap: 15px;
+    }
 
+    .size-options input[type="radio"] {
+        display: none;
+    }
+
+    .size-circle {
+        width: 45px;
+        height: 45px;
+        border: 2px solid #ddd;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background-color: white;
+    }
+
+    .size-options input[type="radio"]:checked + .size-circle {
+        background-color: #212529;
+        color: white;
+        border-color: #212529;
+    }
+
+    .size-circle:hover {
+        border-color: #212529;
+    }
+</style>
 <div class="container">
     <h1 class="mb-3">
         Urban X <small class="text-muted">@ViewData["Title"]</small>
@@ -36,25 +62,102 @@
                         <thead>
                             <tr>
                                 <th scope="col">Imagen</th>
-                                <th scope="col">@Html.DisplayNameFor(model => listItemsCarrito.FirstOrDefault().Producto.Nombre)</th>
-                                <th scope="col">@Html.DisplayNameFor(model => listItemsCarrito.FirstOrDefault().Cantidad)</th>
-                                <th scope="col">Talla</th> <!-- Nueva columna para la talla -->
+                                <th scope="col">@Html.DisplayNameFor(model => model.FirstOrDefault().Producto.Nombre)
+                                </th>
+                                <th scope="col">@Html.DisplayNameFor(model => model.FirstOrDefault().Cantidad)</th>
+                                <th scope="col">Talla</th>
+                                <th scope="col">Precio</th>
                                 <th scope="col">Total</th>
-                                <th scope="col">Acción</th>
-                                <th scope="col">Acción</th>
+                                <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Carrito item in Model.elementosCarrito) {
+                            @foreach (var item in Model)
+                            {
                                 <tr>
-                                    <td class="align-middle"><img src="@item.Producto.ImageURL" class="d-block image-fit" style="height: 50px;"></td>
-                                    <td class="align-middle">@Html.DisplayFor(modelItem => item.Producto.Nombre)</td>
-                                    <td class="align-middle">@Html.DisplayFor(modelItem => item.Cantidad)</td>
-                                    <td class="align-middle">@Html.DisplayFor(modelItem => item.Talla)</td> <!-- Mostrar talla -->
-                                    <td class="align-middle">@Html.DisplayFor(modelItem => item.Precio)</td>
-                                    <td class="align-middle"><a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id">Editar</a></td>
-                                    <td class="align-middle"><a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Eliminar</a></td>
+                                    <td class="align-middle">
+                                        <img src="@item.Producto.ImageURL" class="d-block image-fit" style="height: 50px;">
+                                    </td>
+                                    <td class="align-middle">@item.Producto.Nombre</td>
+                                    <td class="align-middle">@item.Cantidad</td>
+                                    <td class="align-middle">@item.Talla</td>
+                                    <td class="align-middle">@item.Precio.ToString("C")</td>
+                                    <td class="align-middle">@((item.Cantidad * item.Precio).ToString("C"))</td>
+                                    <td class="align-middle">
+                                        <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                            data-bs-target="#editModal@(item.Producto.Id)@(item.Talla.Replace(" ", ""))">
+                                            Editar
+                                        </button>
+                                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Producto.Id"
+                                            asp-route-talla="@item.Talla">
+                                            Eliminar
+                                        </a>
+                                    </td>
                                 </tr>
+
+                                <!-- Reemplaza el div del modal actual con este código -->
+<div class="modal fade" id="editModal@(item.Producto.Id)@(item.Talla.Replace(" ", ""))" 
+     tabindex="-1" aria-labelledby="editModalLabel@(item.Producto.Id)" 
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="EditCarrito" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel@(item.Producto.Id)">
+                        Editar Producto
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" 
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id" value="@item.Producto.Id" />
+                    <input type="hidden" name="Precio" value="@item.Precio" />
+                    <input type="hidden" name="UserID" value="@item.UserID" />
+                    <input type="hidden" name="Estado" value="@item.Estado" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Producto</label>
+                        <input type="text" class="form-control" 
+                               value="@item.Producto.Nombre" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Talla</label>
+                        <div class="size-selector">
+                            <div class="size-options">
+                                <input type="radio" id="sizeS@(item.Producto.Id)" name="talla" value="S" 
+                                       @(item.Talla == "S" ? "checked" : "") required>
+                                <label for="sizeS@(item.Producto.Id)" class="size-circle">S</label>
+
+                                <input type="radio" id="sizeM@(item.Producto.Id)" name="talla" value="M" 
+                                       @(item.Talla == "M" ? "checked" : "")>
+                                <label for="sizeM@(item.Producto.Id)" class="size-circle">M</label>
+
+                                <input type="radio" id="sizeL@(item.Producto.Id)" name="talla" value="L" 
+                                       @(item.Talla == "L" ? "checked" : "")>
+                                <label for="sizeL@(item.Producto.Id)" class="size-circle">L</label>
+
+                                <input type="radio" id="sizeXL@(item.Producto.Id)" name="talla" value="XL" 
+                                       @(item.Talla == "XL" ? "checked" : "")>
+                                <label for="sizeXL@(item.Producto.Id)" class="size-circle">XL</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Cantidad</label>
+                        <input type="number" class="form-control" name="Cantidad" 
+                               value="@item.Cantidad" min="1" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" 
+                            data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">
+                        Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
                             }
                         </tbody>
                     </table>
@@ -62,16 +165,15 @@
 
                 <div class="col-lg-3">
                     <h2 class="card-title">SUBTOTAL</h2>
-
                     <ul class="list-group">
-                        <li class="list-group-item"><h5>S/. @montoTotal</h5></li>
-                        <a class="btn btn-dark" asp-controller="Pago" asp-action="Create" asp-route-monto="@montoTotal">Pagar Ahora</a>
+                        <li class="list-group-item">
+                            <h5>S/. @montoTotal</h5>
+                        </li>
+                        <a class="btn btn-dark" asp-controller="Pago" asp-action="Create"
+                            asp-route-monto="@montoTotal">Pagar Ahora</a>
                     </ul>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
-</body>
-</html>
