@@ -5,6 +5,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,61 +14,71 @@
     <link rel="stylesheet" href="~/css/catalogo.css" asp-append-version="true" />
 
 </head>
+
 <body>
-<div class="container">
-    <h1 class="text-center">
-        Catalogo
-    </h1>
+    <div class="container">
+        <h1 class="text-center">
+            Catalogo
+        </h1>
 
-    @if(ViewData["Message"]!=null){
-    <div class="alert alert-info alert-dismissible fade show" role="alert">
-        <strong>Mensaje:</strong> @ViewData["Message"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    }
-    <div class="row mt-4 mb-3">
-        <!-- Formulario de búsqueda -->
-        <form asp-controller="Catalogo" asp-action="Index" class="mb-3">
-            <div class="input-group">
-                <input type="text" name="searchString" class="form-control buscador_productos" placeholder="Buscar productos...">
-                <button type="submit" class="btn boton_buscar">Buscar</button>
+        @if (ViewData["Message"] != null)
+        {
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <strong>Mensaje:</strong> @ViewData["Message"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        </form>
-    </div>
+        }
+        <div class="row mt-4 mb-3">
+            <!-- Formulario de búsqueda -->
+            <form asp-controller="Catalogo" asp-action="Index" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="searchString" class="form-control buscador_productos"
+                        placeholder="Buscar productos...">
+                    <button type="submit" class="btn boton_buscar">Buscar</button>
+                </div>
+            </form>
+        </div>
 
-    <div class="row">
-        <div id="products" class="mb-3">
-            <div class="row">
-                @foreach (var item in Model)
-                {
-                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="card-img-actions tarjeta_card">
-                                    <img src="@item.ImageURL" class="d-block w-100 image-fit">
+        <div class="row">
+            <div id="products" class="mb-3">
+                <div class="row">
+                    @foreach (var item in Model)
+
+                    {
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="card-img-actions tarjeta_card">
+                                        <img src="@item.ImageURL" class="d-block w-100 image-fit">
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="card-body mt-0 pt-0">
-                                <h6 class="card-title">Categoria: @Html.DisplayFor(modelItem => item.Categoria)</h6>
-                                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
-                                <p class="card-text">Precio: S/@Html.DisplayFor(modelItem => item.Precio)</p>
+                                <div class="card-body mt-0 pt-0">
+                                    <h6 class="card-title">Categoria: @Html.DisplayFor(modelItem => item.Categoria)</h6>
+                                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
+                                    <p class="card-text">Precio: S/@Html.DisplayFor(modelItem => item.Precio)</p>
 
-                                <!-- Nuevo contenedor de los botones -->
-                                <div class="btn-container">
-                                    <a class="btn boton_agregar" asp-action="Add" asp-route-id="@item.Id">Agregar a carrito</a>
-                                    <a class="btn boton_ver" asp-action="Details" asp-route-id="@item.Id">Ver Ahora</a>
+                                    <!-- Nuevo contenedor de los botones -->
+                                    <div class="btn-container">
+                                        <form asp-action="AddToCart" asp-controller="Catalogo" method="post">
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <input type="hidden" name="talla" value="S" />
+                                            <input type="hidden" name="cantidad" value="1" />
+                                            <button type="submit" class="btn boton_agregar">Agregar a carrito</button>
+                                        </form>
+                                        <a class="btn boton_ver" asp-action="Details" asp-route-id="@item.Id">Ver Ahora</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
 
 </body>
+
 </html>

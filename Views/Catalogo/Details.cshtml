@@ -2,14 +2,16 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalles</title>
 
     <link rel="stylesheet" href="~/css/detalle_catalogo.css" asp-append-version="true" />
-    <script src="~/js/catalogo_detalle.js" ></script>
+    <script src="~/js/catalogo_detalle.js"></script>
 </head>
+
 <body>
 
     <div class="container mb-4">
@@ -27,29 +29,34 @@
                 <div class="col-sm-12 col-md-6 col-lg-7 m-0 mt-3 mt-sm-3 mt-md-0 p-0">
                     <h5 class="card-title">@Model.Nombre</h5>
                     <p class="card-text">Descripción: @Model.Descripcion</p>
-                    <p class="card-text">Precio: <span style="color: #FF8906;">S/.@Html.DisplayFor(model => model.Precio)</span></p>
+                    <p class="card-text">Precio: <span style="color: #FF8906;">S/.@Html.DisplayFor(model =>
+                            model.Precio)</span></p>
 
                     <!-- Formulario para seleccionar talla y cantidad -->
                     <form asp-action="Add" asp-controller="Carrito" method="post">
                         <input type="hidden" name="id" value="@Model.Id" />
-                        
+
                         <div class="mb-3">
                             <label for="Talla" class="form-label texto_detalle_producto">Talla:</label>
                             <div class="d-flex mb-2">
                                 <div class="form-check me-3">
-                                    <input class="form-check-input" type="radio" name="Talla" id="tallaS" value="S" required>
+                                    <input class="form-check-input" type="radio" name="Talla" id="tallaS" value="S"
+                                        required>
                                     <label class="form-check-label" for="tallaS">S</label>
                                 </div>
                                 <div class="form-check me-3">
-                                    <input class="form-check-input" type="radio" name="Talla" id="tallaM" value="M" required>
+                                    <input class="form-check-input" type="radio" name="Talla" id="tallaM" value="M"
+                                        required>
                                     <label class="form-check-label" for="tallaM">M</label>
                                 </div>
                                 <div class="form-check me-3">
-                                    <input class="form-check-input" type="radio" name="Talla" id="tallaL" value="L" required>
+                                    <input class="form-check-input" type="radio" name="Talla" id="tallaL" value="L"
+                                        required>
                                     <label class="form-check-label" for="tallaL">L</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="Talla" id="tallaXL" value="XL" required>
+                                    <input class="form-check-input" type="radio" name="Talla" id="tallaXL" value="XL"
+                                        required>
                                     <label class="form-check-label" for="tallaXL">XL</label>
                                 </div>
                             </div>
@@ -61,7 +68,8 @@
                             <label for="cantidad" class="form-label texto_detalle_producto">Cantidad:</label>
                             <div class="quantity-wrapper">
                                 <span class="minus">-</span>
-                                <input type="number" id="cantidad" name="cantidad" class="form-control" value="1" min="1" required>
+                                <input type="number" id="cantidad" name="cantidad" class="form-control" value="1"
+                                    min="1" required>
                                 <span class="plus">+</span>
                             </div>
                         </div>
@@ -69,9 +77,10 @@
 
 
 
-                        <div class="d-flex">
-                            <button type="submit" class="btn btn-añadir">Añadir al Carrito</button>
-                            <button type="submit" class="btn btn-comprar" formaction="@Url.Action("Comprar", "Carrito")">Comprar</button>
+                        <div class="d-flex mt-3">
+                            <button type="submit" class="btn btn-añadir mr-2">Añadir al Carrito</button>
+                            <button type="submit" class="btn btn-comprar"
+                                formaction="@Url.Action("Comprar", "Carrito")">Comprar</button>
                         </div>
                     </form>
                 </div>
@@ -80,4 +89,5 @@
     </div>
 
 </body>
+
 </html>
