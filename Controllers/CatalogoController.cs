@@ -9,6 +9,7 @@ using urbanx.Data;
 using Microsoft.EntityFrameworkCore;
 using urbanx.Models;
 using Microsoft.AspNetCore.Identity;
+using urbanx.Service;
 
 namespace urbanx.Controllers
 {

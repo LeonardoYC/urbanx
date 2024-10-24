@@ -27,6 +27,9 @@ builder.Services.AddControllersWithViews();
 
 //Registro mi logica 
 builder.Services.AddScoped<ProductoService, ProductoService>();
+
+builder.Services.AddSingleton<CartService>();
+
 //Contacto con Formspree
 builder.Services.AddHttpClient();
 
