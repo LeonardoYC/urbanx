@@ -138,13 +138,72 @@ namespace urbanx.Controllers
             }
         }
 
-        public async Task<IActionResult> DescargarPDF()
+        public async Task<IActionResult> EnviarPDFPorCorreo()
         {
             try
             {
                 var userId = _userManager.GetUserName(User);
                 var user = await _userManager.FindByNameAsync(userId);
 
+                var ultimoPedido = await _context.Pedido
+                    .Where(p => p.UserID == userId)
+                    .OrderByDescending(p => p.ID)
+                    .FirstOrDefaultAsync();
+
+                if (ultimoPedido == null)
+                {
+                    TempData["ErrorMessage"] = "No se encontró ningún pedido.";
+                    return RedirectToAction("Create");
+                }
+
+                var itemsPedido = await _context.DetallePedido
+                    .Include(d => d.Producto)
+                    .Where(d => d.pedido.ID == ultimoPedido.ID)
+                    .ToListAsync();
+
+                var resumenItems = itemsPedido.Select(item => new CarritoResumenViewModel
+                {
+                    Producto = item.Producto?.Nombre ?? "Sin nombre",
+                    CantProdu = item.Cantidad,
+                    Precio = item.Precio,
+                    NumeroPedido = ultimoPedido.ID
+                }).ToList();
+
+                var pdf = new ViewAsPdf("ImprimirPago", resumenItems)
+                {
+                    FileName = $"Pedido_{ultimoPedido.ID}.pdf",
+                    PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait
+                };
+
+                var pdfBytes = await pdf.BuildFile(ControllerContext);
+
+                if (user?.Email != null)
+                {
+                    await EnviarEmailConPdf(user.Email, ultimoPedido.ID.ToString(), pdfBytes);
+                    TempData["Message"] = "El resumen de tu pedido ha sido enviado a tu correo electrónico.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "No se pudo enviar el correo, el usuario no tiene email registrado.";
+                }
+
+                return RedirectToAction("Create");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al enviar el email");
+                TempData["ErrorMessage"] = "Error al enviar el correo. Por favor, intenta nuevamente.";
+                return RedirectToAction("Create");
+            }
+        }
+
+
+        public async Task<IActionResult> DescargarPDF()
+        {
+            try
+            {
+                var userId = _userManager.GetUserName(User);
                 var ultimoPedido = await _context.Pedido
                     .Where(p => p.UserID == userId)
                     .OrderByDescending(p => p.ID)
@@ -177,19 +236,6 @@ namespace urbanx.Controllers
 
                 var pdfBytes = await pdf.BuildFile(ControllerContext);
 
-                if (user?.Email != null)
-                {
-                    try
-                    {
-                        await EnviarEmailConPdf(user.Email, ultimoPedido.ID.ToString(), pdfBytes);
-                        TempData["Message"] = "El resumen de tu pedido ha sido enviado a tu correo electrónico.";
-                    }
-                    catch
-                    {
-                        TempData["ErrorMessage"] = "No se pudo enviar el email, pero puedes descargar el PDF.";
-                    }
-                }
-
                 return File(pdfBytes, "application/pdf", $"Pedido_{ultimoPedido.ID}.pdf");
             }
             catch (Exception ex)
@@ -199,6 +245,7 @@ namespace urbanx.Controllers
                 return RedirectToAction("Create");
             }
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

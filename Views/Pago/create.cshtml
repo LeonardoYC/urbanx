@@ -8,13 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pago</title>
     <link rel="stylesheet" href="~/css/pago.css" asp-append-version="true" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Añadimos jQuery -->
 </head>
 
 <body>
-    <h1>Sección de Pago</h1>
+    <h1 class="mt-5">Sección de Pago</h1>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-sm-10 col-md-8 mt-5">
+            <div class="col-sm-10 col-md-8">
                 @if (TempData["ErrorMessage"] != null)
                 {
                     <div class="alert alert-danger">
@@ -66,6 +67,21 @@
                             <input asp-for="MontoTotal" class="form-control" data-thousands="," data-decimal="." />
                         </div>
                     </div>
+
+                    <!-- Opciones para recibir la boleta -->
+                    <div class="form-group row">
+                        <div class="col-sm-4 text-right">
+                            <label>Opciones de Boleta:</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="checkbox" id="recibirBoleta" /> Recibir boleta
+                            <div id="opcionesBoleta" style="display: none;">
+                                <input type="checkbox" id="recibirCorreo" /> Recibir en el correo <br />
+                                <input type="checkbox" id="descargarPDF" /> Descargar en PDF
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group row">
                         <div class="col-sm-4"></div>
                         <div class="col-sm-6">
@@ -74,18 +90,71 @@
                     </div>
                 </form>
 
+                <!-- Botones de acciones: Descargar PDF y Enviar por Correo -->
+                <div id="botonesAccion" class="text-center mt-3" style="display: none;">
+                    <form asp-controller="Pago" asp-action="DescargarPDF" method="get" class="d-inline">
+                        <button type="submit" id="btnDescargarPDF" class="btn btn-danger mt-3"
+                            style="display: none;">Descargar Resumen en PDF</button>
+                    </form>
+
+                    <form asp-controller="Pago" asp-action="EnviarPDFPorCorreo" method="get" class="d-inline">
+                        <button type="submit" id="btnEnviarCorreo" class="btn btn-info mt-3"
+                            style="display: none;">Enviar Resumen por Correo</button>
+                    </form>
+                </div>
+
                 @if (ViewData["Message"] != null)
                 {
-                    <div class="text-center mt-3">
-                        <h3>@ViewData["Message"]</h3>
-                        <form asp-controller="Pago" asp-action="DescargarPDF" method="get">
-                            <button type="submit" class="btn btn-secondary mt-3">Descargar Resumen en PDF</button>
-                        </form>
+                    <div class="alert  alert-success alert-dismissible text-center mt-3 fade show" role="alert">
+                        <h4>@ViewData["Message"]</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 }
+
             </div>
         </div>
     </div>
+
+    <!-- Script para controlar la visibilidad de opciones y botones -->
+    <script>
+        $(document).ready(function () {
+            // Mostrar las opciones de boleta si se selecciona "Recibir boleta"
+            $('#recibirBoleta').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#opcionesBoleta').show();
+                } else {
+                    $('#opcionesBoleta').hide();
+                    $('#recibirCorreo').prop('checked', false);
+                    $('#descargarPDF').prop('checked', false);
+                    $('#btnEnviarCorreo').hide();
+                    $('#btnDescargarPDF').hide();
+                    $('#botonesAccion').hide();
+                }
+            });
+
+            // Mostrar los botones según las opciones seleccionadas
+            $('#recibirCorreo, #descargarPDF').change(function () {
+                if ($('#recibirCorreo').is(':checked') || $('#descargarPDF').is(':checked')) {
+                    $('#botonesAccion').show();
+                } else {
+                    $('#botonesAccion').hide();
+                }
+
+                if ($('#recibirCorreo').is(':checked')) {
+                    $('#btnEnviarCorreo').show();
+                } else {
+                    $('#btnEnviarCorreo').hide();
+                }
+
+                if ($('#descargarPDF').is(':checked')) {
+                    $('#btnDescargarPDF').show();
+                } else {
+                    $('#btnDescargarPDF').hide();
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>
