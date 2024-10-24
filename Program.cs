@@ -77,6 +77,9 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
 });
 
+//PDF
+IWebHostEnvironment env = app.Environment;
+Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, @"C:\Users\Usuario\Desktop\UrbanX\Rotativa\Windows");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
