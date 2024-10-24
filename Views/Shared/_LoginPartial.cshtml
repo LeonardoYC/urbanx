@@ -7,7 +7,12 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="">
-            <a asp-area="" asp-controller="Carrito" asp-action="Index"><i class="fa-solid fa-cart-shopping"></i> Carrito</a>
+            <a asp-area="" asp-controller="Carrito" asp-action="Index"
+                class="btn btn-none position-relative d-inline-flex align-items-center">
+                <i class="fa-solid fa-cart-shopping me-2"></i>
+                <span>Carrito</span>
+                @await Component.InvokeAsync("CartBadge")
+            </a>
         </li>
         <li class="">
             <a  asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
