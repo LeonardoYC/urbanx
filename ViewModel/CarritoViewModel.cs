@@ -33,6 +33,7 @@ namespace urbanx.ViewModels
         public string? Producto { get; set; }
         public int CantProdu { get; set; }
         public decimal Precio { get; set; }
-        public decimal Subtotal => Precio * CantProdu;  // Añadido para calcular el subtotal automáticamente
+        public decimal Subtotal => Precio * CantProdu;
+        public int NumeroPedido { get; set; }
     }
 }
