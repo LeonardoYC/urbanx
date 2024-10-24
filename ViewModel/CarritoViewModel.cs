@@ -30,8 +30,9 @@ namespace urbanx.ViewModels
 
     public class CarritoResumenViewModel
     {
-        public List<CarritoViewModel> Items { get; set; } = new List<CarritoViewModel>();
-        public decimal Total { get; set; }
-        public int TotalItems { get; set; }
+        public string? Producto { get; set; }
+        public int CantProdu { get; set; }
+        public decimal Precio { get; set; }
+        public decimal Subtotal => Precio * CantProdu;  // Añadido para calcular el subtotal automáticamente
     }
 }

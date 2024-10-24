@@ -2,23 +2,28 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pago</title>
-
     <link rel="stylesheet" href="~/css/pago.css" asp-append-version="true" />
-
 </head>
-<body>
 
+<body>
     <h1>Sección de Pago</h1>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-sm-10 col-md-8 mt-5">
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
                 <form asp-controller="Pago" asp-action="Pagar">
                     <div class="form-group row">
-                        <input type="hidden" asp-for="UserID"/>
+                        <input type="hidden" asp-for="UserID" />
                         <div class="col-sm-4 text-right">
                             <label asp-for="NombreTarjeta" class="control-label"></label>
                         </div>
@@ -31,15 +36,17 @@
                             <label asp-for="NumeroTarjeta" class="control-label"></label>
                         </div>
                         <div class="col-sm-6">
-                            <input asp-for="NumeroTarjeta" class="form-control" data-inputmask="'mask': '9999-9999-9999-9999'" />
+                            <input asp-for="NumeroTarjeta" class="form-control"
+                                data-inputmask="'mask': '9999-9999-9999-9999'" />
                         </div>
-                    </div>              
+                    </div>
                     <div class="form-group row">
                         <div class="col-sm-4 text-right">
                             <label asp-for="DueDateYYMM" class="control-label"></label>
                         </div>
                         <div class="col-sm-6">
-                            <input asp-for="DueDateYYMM" class="form-control" data-inputmask="'mask': '99/99', 'placeholder': 'yy/mm'" />
+                            <input asp-for="DueDateYYMM" class="form-control"
+                                data-inputmask="'mask': '99/99', 'placeholder': 'yy/mm'" />
                         </div>
                     </div>
                     <div class="form-group row">
@@ -47,7 +54,8 @@
                             <label asp-for="Cvv" class="control-label"></label>
                         </div>
                         <div class="col-sm-6">
-                            <input asp-for="Cvv" class="form-control" data-inputmask="'mask': '999', 'placeholder': '999'" />
+                            <input asp-for="Cvv" class="form-control"
+                                data-inputmask="'mask': '999', 'placeholder': '999'" />
                         </div>
                     </div>
                     <div class="form-group row">
@@ -57,17 +65,27 @@
                         <div class="col-sm-6">
                             <input asp-for="MontoTotal" class="form-control" data-thousands="," data-decimal="." />
                         </div>
-                    </div>  
+                    </div>
                     <div class="form-group row">
                         <div class="col-sm-4"></div>
                         <div class="col-sm-6">
-                            <button type="submit" class="btn btn-primary">PAGAR</button> 
+                            <button type="submit" class="btn btn-primary">PAGAR</button>
                         </div>
                     </div>
                 </form>
-                <h1 class="text-center">@ViewData["Message"]</h1>
+
+                @if (ViewData["Message"] != null)
+                {
+                    <div class="text-center mt-3">
+                        <h3>@ViewData["Message"]</h3>
+                        <form asp-controller="Pago" asp-action="DescargarPDF" method="get">
+                            <button type="submit" class="btn btn-secondary mt-3">Descargar Resumen en PDF</button>
+                        </form>
+                    </div>
+                }
             </div>
         </div>
     </div>
 </body>
+
 </html>

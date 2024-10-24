@@ -9,6 +9,8 @@ using urbanx.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using urbanx.Data;
+using urbanx.ViewModels;
+using Rotativa.AspNetCore;
 
 namespace urbanx.Controllers
 {
@@ -29,56 +31,105 @@ namespace urbanx.Controllers
 
         public IActionResult Create(Decimal monto)
         {
-
             Pago pago = new Pago();
             pago.UserID = _userManager.GetUserName(User);
             pago.MontoTotal = monto;
             return View(pago);
         }
-                [HttpPost]
-        public IActionResult Pagar(Pago pago)
+
+        [HttpPost]
+        public async Task<IActionResult> Pagar(Pago pago)
         {
-            pago.PaymentDate = DateTime.UtcNow;
-            _context.Add(pago);
-
-            var itemsCarrito = from o in _context.DataItemCarrito select o;
-            itemsCarrito = itemsCarrito.
-                Include(p => p.Producto).
-                Where(s => s.UserID.Equals(pago.UserID) && s.Estado.Equals("PENDIENTE"));
-
-            Pedido pedido = new Pedido();
-            pedido.UserID = pago.UserID;
-            pedido.Total = pago.MontoTotal;
-            pedido.pago = pago;
-            pedido.Status = "PENDIENTE";
-            _context.Add(pedido);
-
-            List<DetallePedido> itemsPedido = new List<DetallePedido>();
-            foreach(var item in itemsCarrito.ToList()){
-                DetallePedido detallePedido = new DetallePedido();
-                detallePedido.pedido=pedido;
-                detallePedido.Precio = item.Precio;
-                detallePedido.Producto = item.Producto;
-                detallePedido.Cantidad = item.Cantidad;
-                itemsPedido.Add(detallePedido);
-            }
-
-
-            _context.AddRange(itemsPedido);
-
-            foreach (Carrito p in itemsCarrito.ToList())
+            try
             {
-                p.Estado="PROCESADO";
+                pago.PaymentDate = DateTime.UtcNow;
+                _context.Add(pago);
+
+                var itemsCarrito = await _context.DataItemCarrito
+                    .Include(p => p.Producto)
+                    .Where(s => s.UserID.Equals(pago.UserID) && s.Estado.Equals("PENDIENTE"))
+                    .ToListAsync();
+
+                Pedido pedido = new Pedido();
+                pedido.UserID = pago.UserID;
+                pedido.Total = pago.MontoTotal;
+                pedido.pago = pago;
+                pedido.Status = "PENDIENTE";
+                _context.Add(pedido);
+
+                List<DetallePedido> itemsPedido = new List<DetallePedido>();
+
+                foreach (var item in itemsCarrito)
+                {
+                    DetallePedido detallePedido = new DetallePedido
+                    {
+                        pedido = pedido,
+                        Precio = item.Precio,
+                        Producto = item.Producto,
+                        Cantidad = item.Cantidad
+                    };
+                    itemsPedido.Add(detallePedido);
+                    item.Estado = "PROCESADO";
+                }
+
+                _context.AddRange(itemsPedido);
+                _context.UpdateRange(itemsCarrito);
+                await _context.SaveChangesAsync();
+
+                // Guardar el ID del pedido en TempData para poder descargarlo después
+                TempData["UltimoPedidoId"] = pedido.ID;
+                ViewData["Message"] = "El pago se ha registrado y su pedido nro " + pedido.ID + " esta en camino";
+
+                return View("Create");
             }
-
-            _context.UpdateRange(itemsCarrito);
-
-            _context.SaveChanges();
-
-            ViewData["Message"] = "El pago se ha registrado y su pedido nro "+ pedido.ID +" esta en camino";
-            return View("Create");
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al procesar el pago");
+                ViewData["Message"] = "Ocurrió un error al procesar el pago. Por favor, intente nuevamente.";
+                return View("Create", pago);
+            }
         }
 
+        public async Task<IActionResult> DescargarPDF()
+        {
+            try
+            {
+                var userId = _userManager.GetUserName(User);
+                var ultimoPedidoId = TempData["UltimoPedidoId"];
+
+                var itemsPedido = await _context.DetallePedido
+                    .Include(d => d.Producto)
+                    .Where(d => d.pedido.UserID == userId)
+                    .OrderByDescending(d => d.pedido.ID)
+                    .Take(1)
+                    .ToListAsync();
+
+                if (!itemsPedido.Any())
+                {
+                    return RedirectToAction("Create");
+                }
+
+                var resumenItems = itemsPedido.Select(item => new CarritoResumenViewModel
+                {
+                    Producto = item.Producto?.Nombre ?? "Sin nombre",
+                    CantProdu = item.Cantidad,
+                    Precio = item.Precio
+                }).ToList();
+
+                return new ViewAsPdf("ImprimirPago", resumenItems)  // Change "CarritoResumenPDF" to "ImprimirPago"
+                {
+                    FileName = $"Pedido_{ultimoPedidoId ?? "resumen"}.pdf",
+                    PageSize = Rotativa.AspNetCore.Options.Size.A4,
+                    PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al generar el PDF");
+                TempData["ErrorMessage"] = "Error al generar el PDF. Por favor, intente nuevamente.";
+                return RedirectToAction("Create");
+            }
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

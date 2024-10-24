@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using urbanx.ViewModels;
 
 namespace urbanx.Models
 {
@@ -17,6 +18,6 @@ namespace urbanx.Models
         [NotNull]
         public int Cantidad { get; set; }
         [NotNull]
-        public string Estado { get; set; } ="PENDIENTE";
+        public string Estado { get; set; } = "PENDIENTE";
     }
 }
