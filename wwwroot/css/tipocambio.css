@@ -1,62 +1,115 @@
-/* Contenedor principal */
-.container {
-  padding: 20px;
-  border-radius: 15px;
+/* Main Container Styles */
+.exchange-container {
+  background-color: #ffffff;
+  min-height: 60vh; /* Aumenta la altura mínima */
+  padding: 3rem 0; /* Incrementa el relleno */
 }
 
-/* Título */
-h1.text-center {
-  font-size: 2.2rem;
-  font-weight: bold;
-  color: #4a90e2;
+/* Card Styles */
+.exchange-card {
+  background-color: #f8f9fa;
+  border-radius: 20px; /* Aumenta el borde redondeado */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra más destacada */
+  padding: 2rem; /* Aumenta el padding interno */
+  max-width: 600px; /* Incrementa el ancho máximo */
+  margin: 0 auto;
+  font-size: 1.2rem; /* Texto más grande */
 }
 
-/* Etiquetas y campos del formulario */
-.form-group label {
+/* Header Styles */
+.exchange-title {
+  color: #524f62;
+  font-size: 2rem; /* Título más grande */
+  font-weight: 700; /* Texto más grueso */
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Form Styles */
+.form-label {
+  color: #6c757d;
   font-size: 1rem;
-  font-weight: bold;
-  color: #666;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
 }
 
+.form-select,
 .form-control {
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  font-size: 1rem;
-  transition: border-color 0.3s ease-in-out;
+  border: 2px solid #e4e6eb;
+  color: #495057;
+  border-radius: 10px; /* Bordes más redondeados */
+  font-size: 1.1rem; /* Aumenta el tamaño del texto */
+  padding: 1rem; /* Incrementa el espacio interno */
+  transition: all 0.3s ease;
 }
 
-/* Ajuste de espaciado del botón */
-.form-group.text-center {
-  margin-top: 20px;
-  /* Añade margen superior para separarlo de los campos anteriores */
-}
-
+.form-select:focus,
 .form-control:focus {
-  border-color: #4a90e2;
-  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
-  outline: none;
+  border-color: #ff8906;
+  box-shadow: 0 0 10px rgba(255, 137, 6, 0.5); /* Efecto al enfocar */
 }
 
-/* Botón de enviar */
-.botonCambio {
-  background-color: #4a90e2;
-  color: #fff;
-  padding: 10px 20px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border-radius: 8px;
+/* Button Styles */
+.btn-exchange {
+  background-color: #ff8906;
   border: none;
-  transition: background-color 0.3s ease-in-out;
+  border-radius: 10px;
+  color: #fffffe;
+  font-size: 1.2rem; /* Aumenta el tamaño del botón */
+  font-weight: 600;
+  padding: 1rem 2rem; /* Botón más grande */
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 1.5rem;
 }
 
-.botonCambio:hover {
-  background-color: #357abd;
+.btn-exchange:hover {
+  background-color: #e57300;
+  transform: translateY(-2px); /* Efecto hover */
 }
 
-/* Texto del resultado */
-.tituloCambio {
-  font-size: 1.5rem;
-  color: #333;
-  margin-top: 20px;
+/* Results Section */
+.results-container {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.result-label {
+  color: #6c757d;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.result-tipo-cambio,
+.result-monto-convertido {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.result-tipo-cambio {
+  color: #e53170;
+}
+
+.result-monto-convertido {
+  color: #00b38b;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
 }
