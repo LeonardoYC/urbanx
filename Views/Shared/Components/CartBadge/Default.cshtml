@@ -1,0 +1,5 @@
+@model int
+
+<span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+    @(Model > 0 ? Model.ToString() : "0")
+</span>
