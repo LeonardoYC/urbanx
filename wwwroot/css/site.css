@@ -4,20 +4,16 @@
   align-items: center;
 }
 
-
 .contenedor_menu .logo-contenedor a {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-
 .contenedor_menu .logo-contenedor img {
   max-width: 140px;
   height: auto;
 }
-
-
 
 .contenedor_menu .enlances_links_1 {
   display: inline-flex;
@@ -34,7 +30,6 @@
 .enlances_links_2 {
   margin-bottom: 0;
 }
-
 
 .enlances_links_1 li {
   list-style: none;
@@ -108,7 +103,6 @@
   border-radius: 0px;
 }
 
-
 .contenedor_menu .btn {
   color: #fff;
   font-size: 20px;
@@ -181,10 +175,9 @@
     position: relative;
     border-radius: 6px;
     z-index: 9;
-    box-shadow: 0 2px 8px rgba(15, 14, 23, 0.2), 0 4px 15px rgba(15, 14, 23, 0.1);
+    box-shadow: 0 2px 8px rgba(15, 14, 23, 0.2),
+      0 4px 15px rgba(15, 14, 23, 0.1);
   }
-
-
 
   .contenedor_menu .enlances_links_2 {
     display: none;
@@ -204,10 +197,9 @@
     display: block;
   }
 
-
   .contenedor_menu .enlances_links_1 {
     position: absolute;
-    height: 95vh;
+    height: 100vh;
     width: 100%;
     max-width: 350px;
     top: 0;
@@ -231,20 +223,18 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #3A3B3C;
+    background: #3a3b3c;
   }
 
-
-
-  #menu-btn:checked~.enlances_links_1 {
+  #menu-btn:checked ~ .enlances_links_1 {
     left: 0%;
   }
 
-  #menu-btn:checked~.btn.menu-btn {
+  #menu-btn:checked ~ .btn.menu-btn {
     display: none;
   }
 
-  #close-btn:checked~.btn.menu-btn {
+  #close-btn:checked ~ .btn.menu-btn {
     display: block;
   }
 
@@ -257,8 +247,6 @@
     display: block;
     font-size: 20px;
   }
-
-
 
   .enlances_links_1 .drop-menu {
     position: static;
@@ -273,7 +261,7 @@
     transition: all 0.3s ease;
   }
 
-  #showDrop:checked~.drop-menu {
+  #showDrop:checked ~ .drop-menu {
     max-height: 100%;
   }
 
@@ -305,11 +293,6 @@
     font-size: 18px;
   }
 }
-
-
-
-
-
 
 .contenido-footer .links-boxes .box li a {
   color: white;

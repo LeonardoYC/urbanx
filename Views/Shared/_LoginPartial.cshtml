@@ -9,18 +9,21 @@
         <li class="">
             <a asp-area="" asp-controller="Carrito" asp-action="Index"
                 class="btn btn-none position-relative d-inline-flex align-items-center">
-                <i class="fa-solid fa-cart-shopping me-2"></i>
-                <span>Carrito</span>
+                <i style="font-size: 18px;" class="fa-solid fa-cart-shopping me-1"></i>
+                <span style="font-size: 18px;">Carrito</span>
                 @await Component.InvokeAsync("CartBadge")
             </a>
         </li>
         <li class="">
-            <a  asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+            <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
         </li>
         <li class="">
-            <a  asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Logout</a>
+            <a asp-area="Identity" asp-page="/Account/Logout"
+                asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Logout</a>
         </li>
-    }else{
+    }
+    else
+    {
 
         <li class="boton_registrar">
             <a asp-area="Identity" asp-page="/Account/Register">Register</a>
