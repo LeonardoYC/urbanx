@@ -79,7 +79,7 @@ app.UseSwaggerUI(c =>
 
 //PDF
 IWebHostEnvironment env = app.Environment;
-Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, @"C:\Users\Usuario\Desktop\UrbanX\Rotativa\Windows");
+Rotativa.AspNetCore.RotativaConfiguration.Setup(env.ContentRootPath, "Rotativa/Windows");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
