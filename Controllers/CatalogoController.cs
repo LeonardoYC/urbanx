@@ -17,67 +17,115 @@ namespace urbanx.Controllers
         private readonly ILogger<CatalogoController> _logger;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly CartService _cartService;
 
-        public CatalogoController(ILogger<CatalogoController> logger, ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public CatalogoController(ILogger<CatalogoController> logger, ApplicationDbContext context, UserManager<IdentityUser> userManager, CartService cartService)
         {
             _logger = logger;
             _context = context;
             _userManager = userManager;
+            _cartService = cartService;
         }
 
-        public IActionResult Index(string? searchString)
+        public async Task<IActionResult> Index(string searchString)
         {
-            var productos = from o in _context.DataProducto select o;
+            var productos = _context.DataProducto.AsQueryable();
 
-            if(!String.IsNullOrEmpty(searchString)){
+            if (!string.IsNullOrEmpty(searchString))
+            {
                 productos = productos.Where(s => s.Nombre.Contains(searchString) || s.Categoria.Contains(searchString));
             }
 
-            productos = productos.Where(l => l.Estado.Contains("Stock"));
-            return View(productos.ToList());
+            productos = productos.Where(l => l.Estado == "Stock");
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                await UpdateCartTotalItems(user.Email);
+            }
+
+            return View(await productos.ToListAsync());
         }
 
-
-        public async Task<IActionResult> Details(int? id){
-            Producto objProduct = await _context.DataProducto.FindAsync(id);
-            if(objProduct == null){
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
                 return NotFound();
             }
-            return View(objProduct);
+
+            var producto = await _context.DataProducto.FindAsync(id);
+            if (producto == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                await UpdateCartTotalItems(user.Email);
+            }
+
+            return View(producto);
         }
 
-        public async Task<IActionResult> Add(int? id, string Talla = "S", int Cantidad = 1) // Talla por defecto
+        [HttpPost]
+        public async Task<IActionResult> AddToCart(int id, string talla = "S", int cantidad = 1)
         {
-            var userID = _userManager.GetUserName(User);
-            if (userID == null)
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
             {
                 ViewData["Message"] = "Por favor debe loguearse antes de agregar un producto";
-                List<Producto> productos = new List<Producto>();
-                return View("Index", productos);
+                return RedirectToAction(nameof(Index));
+            }
+
+            var producto = await _context.DataProducto.FindAsync(id);
+            if (producto == null)
+            {
+                return NotFound();
+            }
+
+            var existingItem = await _context.DataItemCarrito
+                .FirstOrDefaultAsync(c => c.UserID == user.Email && c.Producto.Id == id && c.Estado == "PENDIENTE" && c.Talla == talla);
+
+            if (existingItem != null)
+            {
+                existingItem.Cantidad += cantidad;
+                _context.Update(existingItem);
             }
             else
             {
-                var producto = await _context.DataProducto.FindAsync(id);
-                Helper.SessionExtensions.Set<Producto>(HttpContext.Session, "MiUltimoProducto", producto);
-                Carrito carrito = new Carrito();
-                carrito.Producto = producto;
-                carrito.Precio = producto.Precio;
-                carrito.Talla = Talla; // Asignar la talla seleccionada (por defecto "S")
-                carrito.Cantidad = Cantidad;
-                carrito.UserID = userID;
+                var carrito = new Carrito
+                {
+                    Producto = producto,
+                    Precio = producto.Precio,
+                    Talla = talla,
+                    Cantidad = cantidad,
+                    UserID = user.Email,
+                    Estado = "PENDIENTE"
+                };
                 _context.Add(carrito);
-                await _context.SaveChangesAsync();
-                ViewData["Message"] = "Se Agrego al carrito";
-                return RedirectToAction(nameof(Index));
             }
+
+            await _context.SaveChangesAsync();
+            await UpdateCartTotalItems(user.Email);
+
+            ViewData["Message"] = "Se agregó al carrito";
+            return RedirectToAction(nameof(Index));
         }
 
-
+        private async Task UpdateCartTotalItems(string userEmail)
+        {
+            var totalItems = await _context.DataItemCarrito
+                .Where(c => c.UserID == userEmail && c.Estado == "PENDIENTE")
+                .SumAsync(c => c.Cantidad);
+            _cartService.UpdateTotalItems(totalItems);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View("Error!");
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
