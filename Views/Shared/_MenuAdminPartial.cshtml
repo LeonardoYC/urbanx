@@ -6,17 +6,20 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    IdentityUser myidentity  = await Task.Run(() => UserManager.GetUserAsync(User));
+    IdentityUser myidentity = await Task.Run(() => UserManager.GetUserAsync(User));
     var roles = await Task.Run(() => UserManager.GetRolesAsync(myidentity));
 
-    @if(roles.Contains("admin") ){
+    @if (roles.Contains("admin"))
+    {
         <li class="itmes_menu">
             <a asp-area="" asp-controller="Pedido" asp-action="Index">Pedidos</a>
         </li>
         <li class="itmes_menu">
             <a asp-area="" asp-controller="Producto" asp-action="Index">Productos</a>
         </li>
-
+        <li class="itmes_menu">
+            <a asp-area="" asp-controller="Publicacion" asp-action="Index">Publicaciones</a>
+        </li>
     }
 
 }
