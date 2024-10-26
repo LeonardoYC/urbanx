@@ -1,0 +1,58 @@
+.container {
+  display: flex; /* Usar flexbox para centrar el contenido */
+  flex-direction: column; /* Colocar los elementos en columna */
+  align-items: center; /* Centrar horizontalmente */
+  justify-content: center; /* Centrar verticalmente */
+  max-width: 400px; /* Ancho máximo para el contenedor */
+  background: #ffffff; /* Fondo blanco */
+  padding: 30px; /* Mayor padding para un aspecto más espacioso */
+  border-radius: 12px; /* Esquinas más redondeadas */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+  margin: 40px auto; /* Margen superior e inferior para separación */
+  border: 1px solid #dee2e6; /* Borde sutil */
+}
+
+h1 {
+  color: #343a40; /* Color oscuro para el encabezado */
+  font-size: 1.8rem; /* Tamaño de fuente más grande */
+  margin-bottom: 15px;
+}
+
+.confirmation-text {
+  color: #6c757d; /* Color gris claro */
+  margin-bottom: 20px;
+  font-size: 1.1rem; /* Aumentar el tamaño del texto */
+  text-align: center; /* Centrar el texto */
+}
+
+.button-group {
+  display: flex;
+  justify-content: center; /* Centrar botones */
+  gap: 20px; /* Espacio entre botones aumentado */
+  margin-top: 20px; /* Espacio arriba de los botones */
+}
+
+.btn {
+  font-size: 1rem;
+  padding: 12px 20px; /* Mayor padding para comodidad */
+  border-radius: 5px; /* Esquinas redondeadas en los botones */
+  transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.btn-danger {
+  background-color: #dc3545; /* Color de fondo para el botón de cerrar sesión */
+  color: white; /* Color del texto en blanco */
+}
+
+.btn-danger:hover {
+  background-color: #c82333; /* Color de fondo al pasar el mouse */
+}
+
+.btn-secondary {
+  background-color: #6c757d; /* Color de fondo para el botón de regresar */
+  color: white; /* Color del texto en blanco */
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268; /* Color de fondo al pasar el mouse */
+}
