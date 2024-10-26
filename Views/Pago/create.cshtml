@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pago</title>
     <link rel="stylesheet" href="~/css/pago.css" asp-append-version="true" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Añadimos jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 
 <body>
@@ -22,49 +23,38 @@
                         @TempData["ErrorMessage"]
                     </div>
                 }
-                <form asp-controller="Pago" asp-action="Pagar">
-                    <div class="form-group row">
-                        <input type="hidden" asp-for="UserID" />
-                        <div class="col-sm-4 text-right">
-                            <label asp-for="NombreTarjeta" class="control-label"></label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input asp-for="NombreTarjeta" class="form-control" />
-                        </div>
-                    </div>
+
+                <form id="payment-form" asp-controller="Pago" asp-action="Pagar">
+                    <input type="hidden" asp-for="UserID" />
+                    <input type="hidden" id="stripeToken" name="stripeToken" />
+
                     <div class="form-group row">
                         <div class="col-sm-4 text-right">
-                            <label asp-for="NumeroTarjeta" class="control-label"></label>
+                            <label for="card-holder-name">Nombre del titular</label>
                         </div>
                         <div class="col-sm-6">
-                            <input asp-for="NumeroTarjeta" class="form-control"
-                                data-inputmask="'mask': '9999-9999-9999-9999'" />
+                            <input id="card-holder-name" name="titular" class="form-control" required />
                         </div>
                     </div>
+
                     <div class="form-group row">
                         <div class="col-sm-4 text-right">
-                            <label asp-for="DueDateYYMM" class="control-label"></label>
+                            <label>Detalles de la tarjeta</label>
                         </div>
                         <div class="col-sm-6">
-                            <input asp-for="DueDateYYMM" class="form-control"
-                                data-inputmask="'mask': '99/99', 'placeholder': 'yy/mm'" />
+                            <div id="card-element" class="form-control">
+                                <!-- Stripe Element will be inserted here -->
+                            </div>
+                            <div id="card-errors" role="alert" class="text-danger"></div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <div class="col-sm-4 text-right">
-                            <label asp-for="Cvv" class="control-label"></label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input asp-for="Cvv" class="form-control"
-                                data-inputmask="'mask': '999', 'placeholder': '999'" />
-                        </div>
-                    </div>
+
                     <div class="form-group row">
                         <div class="col-sm-4 text-right">
                             <label asp-for="MontoTotal" class="control-label"></label>
                         </div>
                         <div class="col-sm-6">
-                            <input asp-for="MontoTotal" class="form-control" data-thousands="," data-decimal="." />
+                            <input asp-for="MontoTotal" class="form-control" readonly />
                         </div>
                     </div>
 
@@ -85,40 +75,86 @@
                     <div class="form-group row">
                         <div class="col-sm-4"></div>
                         <div class="col-sm-6">
-                            <button type="submit" class="btn btn-primary">PAGAR</button>
+                            <button type="submit" class="btn btn-primary" id="submit-button">PAGAR</button>
                         </div>
                     </div>
                 </form>
 
-                <!-- Botones de acciones: Descargar PDF y Enviar por Correo -->
+                <!-- Botones de acciones -->
                 <div id="botonesAccion" class="text-center mt-3" style="display: none;">
                     <form asp-controller="Pago" asp-action="DescargarPDF" method="get" class="d-inline">
-                        <button type="submit" id="btnDescargarPDF" class="btn btn-danger mt-3"
-                            style="display: none;">Descargar Resumen en PDF</button>
+                        <button type="submit" id="btnDescargarPDF" class="btn btn-danger mt-3" style="display: none;">
+                            Descargar Resumen en PDF
+                        </button>
                     </form>
 
                     <form asp-controller="Pago" asp-action="EnviarPDFPorCorreo" method="get" class="d-inline">
-                        <button type="submit" id="btnEnviarCorreo" class="btn btn-info mt-3"
-                            style="display: none;">Enviar Resumen por Correo</button>
+                        <button type="submit" id="btnEnviarCorreo" class="btn btn-info mt-3" style="display: none;">
+                            Enviar Resumen por Correo
+                        </button>
                     </form>
                 </div>
 
                 @if (ViewData["Message"] != null)
                 {
-                    <div class="alert  alert-success alert-dismissible text-center mt-3 fade show" role="alert">
+                    <div class="alert alert-success alert-dismissible text-center mt-3 fade show" role="alert">
                         <h4>@ViewData["Message"]</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 }
-
             </div>
         </div>
     </div>
 
-    <!-- Script para controlar la visibilidad de opciones y botones -->
     <script>
+        // Inicializar Stripe
+        const stripe = Stripe('pk_test_51QDhcnDwxcJrXgtDbqiPjnNtYX0IEkaRU2bzYjsgwR6W9SMrKg33LiwxA1TWXha2NA5WLqmBH9NFNjp4gbRCZvhR00faXJDIhh'); // Reemplaza con tu clave pública de Stripe
+        const elements = stripe.elements();
+
+        // Crear el elemento de tarjeta
+        const cardElement = elements.create('card');
+        cardElement.mount('#card-element');
+
+        // Manejar errores en tiempo real
+        cardElement.on('change', function (event) {
+            const displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        });
+
+        // Manejar el envío del formulario
+        const form = document.getElementById('payment-form');
+        const submitButton = document.getElementById('submit-button');
+        const cardHolderName = document.getElementById('card-holder-name');
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            submitButton.disabled = true;
+
+            try {
+                const { token, error } = await stripe.createToken(cardElement, {
+                    name: cardHolderName.value
+                });
+
+                if (error) {
+                    const errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = error.message;
+                    submitButton.disabled = false;
+                } else {
+                    document.getElementById('stripeToken').value = token.id;
+                    form.submit();
+                }
+            } catch (e) {
+                console.error('Error:', e);
+                submitButton.disabled = false;
+            }
+        });
+
+        // Script para controlar la visibilidad de opciones y botones
         $(document).ready(function () {
-            // Mostrar las opciones de boleta si se selecciona "Recibir boleta"
             $('#recibirBoleta').change(function () {
                 if ($(this).is(':checked')) {
                     $('#opcionesBoleta').show();
@@ -132,7 +168,6 @@
                 }
             });
 
-            // Mostrar los botones según las opciones seleccionadas
             $('#recibirCorreo, #descargarPDF').change(function () {
                 if ($('#recibirCorreo').is(':checked') || $('#descargarPDF').is(':checked')) {
                     $('#botonesAccion').show();
@@ -154,7 +189,6 @@
             });
         });
     </script>
-
 </body>
 
 </html>

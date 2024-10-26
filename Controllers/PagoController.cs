@@ -13,8 +13,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Rotativa.AspNetCore;
 using urbanx.Data;
+using Stripe;
 using urbanx.Models;
 using urbanx.ViewModels;
+using Stripe.TestHelpers;
 
 namespace urbanx.Controllers
 {
@@ -35,6 +37,7 @@ namespace urbanx.Controllers
             _userManager = userManager;
             _context = context;
             _configuration = configuration;
+            StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
         }
 
         public IActionResult Create(decimal monto)
@@ -48,18 +51,30 @@ namespace urbanx.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Pagar(Pago pago)
+        public async Task<IActionResult> Pagar(string stripeToken, string titular, Pago pago)
         {
+            var customers = new Stripe.CustomerService();
+            var charges = new Stripe.ChargeService();
+
+            // Crear un cliente de Stripe
+            var customer = await customers.CreateAsync(new CustomerCreateOptions
+            {
+                Email = User.Identity?.Name,
+                Source = stripeToken,
+            });
+
             try
             {
                 pago.PaymentDate = DateTime.UtcNow;
                 _context.Add(pago);
 
+                // Obtener los items en el carrito
                 var itemsCarrito = await _context.DataItemCarrito
                     .Include(p => p.Producto)
                     .Where(s => s.UserID.Equals(pago.UserID) && s.Estado.Equals("PENDIENTE"))
                     .ToListAsync();
 
+                // Crear un nuevo pedido
                 var pedido = new Pedido
                 {
                     UserID = pago.UserID,
@@ -69,6 +84,19 @@ namespace urbanx.Controllers
                 };
                 _context.Add(pedido);
 
+                // Calcular el monto total para el cargo de Stripe
+                var totalAmount = itemsCarrito.Sum(item => item.Precio * item.Cantidad);
+
+                // Crear el cargo en Stripe
+                var charge = await charges.CreateAsync(new ChargeCreateOptions
+                {
+                    Amount = (long)(totalAmount * 100), // Convertir a centavos
+                    Description = "Compra de " + titular,
+                    Currency = "usd",
+                    Customer = customer.Id
+                });
+
+                // Guardar detalles del pedido
                 var itemsPedido = itemsCarrito.Select(item => new DetallePedido
                 {
                     pedido = pedido,
@@ -77,6 +105,7 @@ namespace urbanx.Controllers
                     Cantidad = item.Cantidad
                 }).ToList();
 
+                // Actualizar el estado de los items en el carrito
                 itemsCarrito.ForEach(item => item.Estado = "PROCESADO");
 
                 _context.AddRange(itemsPedido);
@@ -86,7 +115,14 @@ namespace urbanx.Controllers
                 TempData["UltimoPedidoId"] = pedido.ID;
                 ViewData["Message"] = $"El pago se ha registrado y su pedido nro {pedido.ID} está en camino.";
 
-                return View("Create");
+                // Crear un nuevo modelo Pago con monto 0
+                var nuevoPago = new Pago
+                {
+                    UserID = _userManager.GetUserName(User),
+                    MontoTotal = 0
+                };
+
+                return View("Create", nuevoPago);
             }
             catch (Exception ex)
             {
