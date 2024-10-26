@@ -6,6 +6,7 @@ using urbanx.Service;
 using Microsoft.OpenApi.Models;
 using urbanx.Models;
 using Stripe;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 /* Add services to the container.

@@ -11,6 +11,10 @@
   <ItemGroup>
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Rotativa\Windows\wkhtmltopdf.exe" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Rotativa\Windows\wkhtmltoimage.exe" CopyToOutputDirectory="PreserveNewest" />
+</ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.7" />
