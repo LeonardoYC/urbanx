@@ -4,6 +4,8 @@ using urbanx.Data;
 using urbanx.Service;
 //API
 using Microsoft.OpenApi.Models;
+using urbanx.Models;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 /* Add services to the container.
@@ -19,6 +21,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+//API Stripe
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
