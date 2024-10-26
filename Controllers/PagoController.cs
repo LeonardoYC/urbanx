@@ -17,6 +17,8 @@ using Stripe;
 using urbanx.Models;
 using urbanx.ViewModels;
 using Stripe.TestHelpers;
+using Stripe.BillingPortal;
+using Stripe.Checkout;
 
 namespace urbanx.Controllers
 {
@@ -51,85 +53,124 @@ namespace urbanx.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Pagar(string stripeToken, string titular, Pago pago)
+        public async Task<IActionResult> CrearSesionCheckout([FromBody] Pago pago)
         {
-            var customers = new Stripe.CustomerService();
-            var charges = new Stripe.ChargeService();
-
-            // Crear un cliente de Stripe
-            var customer = await customers.CreateAsync(new CustomerCreateOptions
-            {
-                Email = User.Identity?.Name,
-                Source = stripeToken,
-            });
-
             try
             {
-                pago.PaymentDate = DateTime.UtcNow;
-                _context.Add(pago);
+                var domain = $"{Request.Scheme}://{Request.Host}";
 
-                // Obtener los items en el carrito
+                // Obtener los items del carrito
                 var itemsCarrito = await _context.DataItemCarrito
                     .Include(p => p.Producto)
                     .Where(s => s.UserID.Equals(pago.UserID) && s.Estado.Equals("PENDIENTE"))
                     .ToListAsync();
 
-                // Crear un nuevo pedido
-                var pedido = new Pedido
+                // Crear los line items para Stripe
+                var lineItems = new List<SessionLineItemOptions>();
+                foreach (var item in itemsCarrito)
                 {
-                    UserID = pago.UserID,
-                    Total = pago.MontoTotal,
-                    pago = pago,
-                    Status = "PENDIENTE"
-                };
-                _context.Add(pedido);
+                    lineItems.Add(new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            Currency = "usd",
+                            UnitAmount = (long)(item.Precio * 100), // Convertir a centavos
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = item.Producto.Nombre,
+                                Description = item.Producto.Descripcion
+                            }
+                        },
+                        Quantity = item.Cantidad
+                    });
+                }
 
-                // Calcular el monto total para el cargo de Stripe
-                var totalAmount = itemsCarrito.Sum(item => item.Precio * item.Cantidad);
-
-                // Crear el cargo en Stripe
-                var charge = await charges.CreateAsync(new ChargeCreateOptions
+                // Crear la sesión de Checkout
+                var options = new Stripe.Checkout.SessionCreateOptions
                 {
-                    Amount = (long)(totalAmount * 100), // Convertir a centavos
-                    Description = "Compra de " + titular,
-                    Currency = "usd",
-                    Customer = customer.Id
-                });
-
-                // Guardar detalles del pedido
-                var itemsPedido = itemsCarrito.Select(item => new DetallePedido
-                {
-                    pedido = pedido,
-                    Precio = item.Precio,
-                    Producto = item.Producto,
-                    Cantidad = item.Cantidad
-                }).ToList();
-
-                // Actualizar el estado de los items en el carrito
-                itemsCarrito.ForEach(item => item.Estado = "PROCESADO");
-
-                _context.AddRange(itemsPedido);
-                _context.UpdateRange(itemsCarrito);
-                await _context.SaveChangesAsync();
-
-                TempData["UltimoPedidoId"] = pedido.ID;
-                ViewData["Message"] = $"El pago se ha registrado y su pedido nro {pedido.ID} está en camino.";
-
-                // Crear un nuevo modelo Pago con monto 0
-                var nuevoPago = new Pago
-                {
-                    UserID = _userManager.GetUserName(User),
-                    MontoTotal = 0
+                    LineItems = lineItems,
+                    Mode = "payment",
+                    SuccessUrl = domain + $"/Pago/PagoExitoso?session_id={{CHECKOUT_SESSION_ID}}",
+                    CancelUrl = domain + "/Pago/PagoCancelado",
+                    CustomerEmail = User.Identity?.Name,
+                    PaymentMethodTypes = new List<string> { "card" }
                 };
 
-                return View("Create", nuevoPago);
+                var service = new Stripe.Checkout.SessionService();
+                var session = await service.CreateAsync(options);
+
+                return Json(new { id = session.Id });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al procesar el pago");
-                ViewData["Message"] = "Ocurrió un error al procesar el pago. Por favor, intente nuevamente.";
-                return View("Create", pago);
+                _logger.LogError(ex, "Error al crear la sesión de Checkout");
+                return BadRequest(new { error = "Error al crear la sesión de pago" });
             }
+        }
+
+        public async Task<IActionResult> PagoExitoso(string session_id)
+        {
+            try
+            {
+                var sessionService = new Stripe.Checkout.SessionService();
+                var session = await sessionService.GetAsync(session_id);
+
+                if (session.PaymentStatus == "paid")
+                {
+                    var pago = new Pago
+                    {
+                        UserID = _userManager.GetUserName(User),
+                        PaymentDate = DateTime.UtcNow,
+                        MontoTotal = (decimal)(session.AmountTotal ?? 0) / 100 // Convertir de centavos
+                    };
+                    _context.Add(pago);
+
+                    var itemsCarrito = await _context.DataItemCarrito
+                        .Include(p => p.Producto)
+                        .Where(s => s.UserID.Equals(pago.UserID) && s.Estado.Equals("PENDIENTE"))
+                        .ToListAsync();
+
+                    var pedido = new Pedido
+                    {
+                        UserID = pago.UserID,
+                        Total = pago.MontoTotal,
+                        pago = pago,
+                        Status = "PENDIENTE"
+                    };
+                    _context.Add(pedido);
+
+                    var itemsPedido = itemsCarrito.Select(item => new DetallePedido
+                    {
+                        pedido = pedido,
+                        Precio = item.Precio,
+                        Producto = item.Producto,
+                        Cantidad = item.Cantidad
+                    }).ToList();
+
+                    itemsCarrito.ForEach(item => item.Estado = "PROCESADO");
+
+                    _context.AddRange(itemsPedido);
+                    _context.UpdateRange(itemsCarrito);
+                    await _context.SaveChangesAsync();
+
+                    TempData["UltimoPedidoId"] = pedido.ID;
+                    TempData["SuccessMessage"] = $"El pago se ha registrado y su pedido nro {pedido.ID} está en camino.";
+                }
+
+                return RedirectToAction("Create", new { monto = 0 });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al procesar el pago exitoso");
+                TempData["ErrorMessage"] = "Error al procesar el pago. Por favor, contacte al soporte.";
+                return RedirectToAction("Create");
+            }
+        }
+
+        public IActionResult PagoCancelado()
+        {
+            TempData["ErrorMessage"] = "El pago fue cancelado.";
+            return RedirectToAction("Create");
         }
 
         private async Task EnviarEmailConPdf(string emailDestino, string numeroPedido, byte[] pdfBytes)

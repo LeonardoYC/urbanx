@@ -41,21 +41,21 @@ label {
 }
 
 /* Botón de pago */
-.btn-primary {
-  background-color: #28a745;
-  border-color: #28a745;
-  color: #fff;
+.btn-pago {
+  background-color: #ff8906; /* Button */
+  border-color: #f8f9fa; /* Background */
+  color: #ffffff; /* Button text */
   padding: 10px 20px;
   font-size: 1.1rem;
-  border-radius: 5px;
+  border-radius: 6px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   width: 100%;
 }
 
 /* Hover para el botón */
-.btn-primary:hover {
-  background-color: #218838;
-  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
+.btn-pago:hover {
+  background-color: #e53170; /* Tertiary */
+  box-shadow: 0 4px 10px rgba(242, 95, 76, 0.4); /* Secondary con opacidad */
 }
 
 /* Alineación y espaciado */

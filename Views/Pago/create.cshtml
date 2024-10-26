@@ -14,19 +14,27 @@
 
 <body>
     <h1 class="mt-5">Sección de Pago</h1>
+    <h4 style="font-weight: 100;" class="text-center">Todas las transacciones se realizan de manera segura</h4>
+    <div style="border-top: 1px solid black;height: 2px;width: 400px;padding: 0;margin: 20px auto 0 auto;"></div>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-sm-10 col-md-8">
                 @if (TempData["ErrorMessage"] != null)
                 {
-                    <div class="alert alert-danger">
+                    <div class="alert alert-alert alert-dismissible fade show" role="alert">
                         @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 }
 
-                <form id="payment-form" asp-controller="Pago" asp-action="Pagar">
+                <div id="validationAlert" class="alert alert-warning alert-dismissible fade show"
+                    style="display: none;">
+                    Por favor, complete todos los campos y asegúrese que el monto sea mayor a cero.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <form id="payment-form">
                     <input type="hidden" asp-for="UserID" />
-                    <input type="hidden" id="stripeToken" name="stripeToken" />
 
                     <div class="form-group row">
                         <div class="col-sm-4 text-right">
@@ -34,18 +42,6 @@
                         </div>
                         <div class="col-sm-6">
                             <input id="card-holder-name" name="titular" class="form-control" required />
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-sm-4 text-right">
-                            <label>Detalles de la tarjeta</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <div id="card-element" class="form-control">
-                                <!-- Stripe Element will be inserted here -->
-                            </div>
-                            <div id="card-errors" role="alert" class="text-danger"></div>
                         </div>
                     </div>
 
@@ -75,7 +71,7 @@
                     <div class="form-group row">
                         <div class="col-sm-4"></div>
                         <div class="col-sm-6">
-                            <button type="submit" class="btn btn-primary" id="submit-button">PAGAR</button>
+                            <button type="button" class="btn-pago" id="submit-button">PAGAR</button>
                         </div>
                     </div>
                 </form>
@@ -95,10 +91,10 @@
                     </form>
                 </div>
 
-                @if (ViewData["Message"] != null)
+                @if (TempData["SuccessMessage"] != null)
                 {
-                    <div class="alert alert-success alert-dismissible text-center mt-3 fade show" role="alert">
-                        <h4>@ViewData["Message"]</h4>
+                    <div class="alert alert-success alert-dismissible fade show text-center mt-3" role="alert">
+                        <h4>@TempData["SuccessMessage"]</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 }
@@ -107,53 +103,77 @@
     </div>
 
     <script>
-        // Inicializar Stripe
-        const stripe = Stripe('pk_test_51QDhcnDwxcJrXgtDbqiPjnNtYX0IEkaRU2bzYjsgwR6W9SMrKg33LiwxA1TWXha2NA5WLqmBH9NFNjp4gbRCZvhR00faXJDIhh'); // Reemplaza con tu clave pública de Stripe
-        const elements = stripe.elements();
+        const stripe = Stripe('pk_test_51QDhcnDwxcJrXgtDbqiPjnNtYX0IEkaRU2bzYjsgwR6W9SMrKg33LiwxA1TWXha2NA5WLqmBH9NFNjp4gbRCZvhR00faXJDIhh');
 
-        // Crear el elemento de tarjeta
-        const cardElement = elements.create('card');
-        cardElement.mount('#card-element');
+        // Función para validar los campos
+        function validarCampos() {
+            const montoTotal = parseFloat('@Model.MontoTotal');
+            const titular = document.getElementById('card-holder-name').value.trim();
 
-        // Manejar errores en tiempo real
-        cardElement.on('change', function (event) {
-            const displayError = document.getElementById('card-errors');
-            if (event.error) {
-                displayError.textContent = event.error.message;
-            } else {
-                displayError.textContent = '';
+            if (montoTotal <= 0 || !titular) {
+                document.getElementById('validationAlert').style.display = 'block';
+                return false;
             }
-        });
+            document.getElementById('validationAlert').style.display = 'none';
+            return true;
+        }
 
-        // Manejar el envío del formulario
-        const form = document.getElementById('payment-form');
-        const submitButton = document.getElementById('submit-button');
-        const cardHolderName = document.getElementById('card-holder-name');
-
-        form.addEventListener('submit', async function (event) {
-            event.preventDefault();
+        // Función para procesar el pago
+        async function procesarPago() {
+            const submitButton = document.getElementById('submit-button');
             submitButton.disabled = true;
 
             try {
-                const { token, error } = await stripe.createToken(cardElement, {
-                    name: cardHolderName.value
+                const response = await fetch('/Pago/CrearSesionCheckout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        UserID: '@Model.UserID',
+                        MontoTotal: parseFloat('@Model.MontoTotal')
+                    })
                 });
 
-                if (error) {
-                    const errorElement = document.getElementById('card-errors');
-                    errorElement.textContent = error.message;
+                const session = await response.json();
+
+                if (session.error) {
+                    console.error('Error:', session.error);
                     submitButton.disabled = false;
-                } else {
-                    document.getElementById('stripeToken').value = token.id;
-                    form.submit();
+                    return;
                 }
-            } catch (e) {
-                console.error('Error:', e);
+
+                const result = await stripe.redirectToCheckout({
+                    sessionId: session.id
+                });
+
+                if (result.error) {
+                    console.error('Error:', result.error);
+                    submitButton.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error:', error);
                 submitButton.disabled = false;
+            }
+        }
+
+        // Event listener para el botón de pago
+        document.getElementById('submit-button').addEventListener('click', async function (e) {
+            e.preventDefault();
+
+            if (validarCampos()) {
+                await procesarPago();
             }
         });
 
-        // Script para controlar la visibilidad de opciones y botones
+        // Monitor de cambios en los campos para ocultar la alerta de validación
+        document.getElementById('card-holder-name').addEventListener('input', function () {
+            if (validarCampos()) {
+                document.getElementById('validationAlert').style.display = 'none';
+            }
+        });
+
+        // Mantener el script existente para las opciones de boleta
         $(document).ready(function () {
             $('#recibirBoleta').change(function () {
                 if ($(this).is(':checked')) {
