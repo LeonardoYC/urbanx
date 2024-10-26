@@ -84,8 +84,7 @@ app.UseSwaggerUI(c =>
 
 //PDF
 IWebHostEnvironment env = app.Environment;
-Rotativa.AspNetCore.RotativaConfiguration.Setup(env.ContentRootPath, "Controllers/Rotativa/Windows/wkhtmltoimage.exe");
-Rotativa.AspNetCore.RotativaConfiguration.Setup(env.ContentRootPath, "Controllers/Rotativa/Windows/wkhtmltopdf.exe");
+Rotativa.AspNetCore.RotativaConfiguration.Setup(env.ContentRootPath, "Rotativa/Windows");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
