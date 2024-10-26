@@ -1,0 +1,32 @@
+.card {
+  border-radius: 8px;
+  background-color: white; /* Fondo blanco */
+}
+
+.card-header {
+  background-color: white; /* Encabezado blanco */
+  color: black; /* Letras negras */
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+.nav {
+  background: white;
+}
+.nav-pills {
+  background: #ffffff;
+}
+
+.nav-link {
+  background-color: white; /* Fondo blanco para enlaces */
+  color: black; /* Letras negras */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link:hover {
+  background-color: #ff8906; /* Color de fondo al pasar el mouse */
+  color: white; /* Color del texto al pasar el mouse */
+}
+
+.nav-item:not(:last-child) {
+  margin-bottom: 10px; /* Espaciado entre los elementos */
+}
