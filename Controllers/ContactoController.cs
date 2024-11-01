@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using urbanx.Data;
 using urbanx.Models;
+using ClasificacionModelo;
 
 namespace urbanx.Controllers
 {
@@ -37,6 +38,11 @@ namespace urbanx.Controllers
         public async Task<IActionResult> EnviarMensaje(Contacto objContacto)
         {
             _logger.LogDebug("Ingreso a Enviar Mensaje");
+
+            MLModelTextClasification.ModelInput sampleData = new MLModelTextClasification.ModelInput(){
+                Comentario = objContacto.Message
+            };
+
 
             // 1. Guardar datos en la base de datos
             _context.Add(objContacto);
