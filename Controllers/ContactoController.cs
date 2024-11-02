@@ -86,7 +86,7 @@ namespace urbanx.Controllers
                 var response = await _httpClient.PostAsync("https://formspree.io/f/xzzbppog", formContent);
                 if (response.IsSuccessStatusCode)
                 {
-                    ViewData["Message"] = "Se registro el contacto y el comentario ah tenido un sentimiento: " + objContacto.Category;
+                    ViewData["Message"] = "Se registró el contacto y el comentario ha tenido un sentimiento." + objContacto.Category;
                     // Limpia los datos creando un nuevo objeto Contacto vacío
                     ModelState.Clear();
                     objContacto = new Contacto();
