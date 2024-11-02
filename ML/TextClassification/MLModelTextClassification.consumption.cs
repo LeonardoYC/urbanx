@@ -7,7 +7,7 @@ using System.IO;
 using System.Collections.Generic;
 namespace ClasificacionModelo
 {
-    public partial class MLModelTextClasification
+    public partial class MLModelTextClassification
     {
         /// <summary>
         /// model input class for MLModel1.
@@ -49,10 +49,9 @@ namespace ClasificacionModelo
 
         #endregion
 
-        private static string MLNetModelPath = Path.GetFullPath(@".\ML\TextClassification\MLModelTextClasification.mlnet");
+        private static string MLNetModelPath = Path.GetFullPath(@".\ML\TextClassification\MLModelTextClassification.mlnet");
 
         public static readonly Lazy<PredictionEngine<ModelInput, ModelOutput>> PredictEngine = new Lazy<PredictionEngine<ModelInput, ModelOutput>>(() => CreatePredictEngine(), true);
-
 
         private static PredictionEngine<ModelInput, ModelOutput> CreatePredictEngine()
         {

@@ -11,6 +11,7 @@ using urbanx.Data;
 using urbanx.Models;
 using ClasificacionModelo;
 
+
 namespace urbanx.Controllers
 {
 
@@ -39,10 +40,31 @@ namespace urbanx.Controllers
         {
             _logger.LogDebug("Ingreso a Enviar Mensaje");
 
-            MLModelTextClasification.ModelInput sampleData = new MLModelTextClasification.ModelInput(){
+            MLModelTextClassification.ModelInput sampleData = new MLModelTextClassification.ModelInput()
+            {
                 Comentario = objContacto.Message
             };
+            
+            MLModelTextClassification.ModelOutput output = MLModelTextClassification.Predict(sampleData);
 
+            var sortedScoresWithLabel = MLModelTextClassification.PredictAllLabels(sampleData);
+            var scoreKeyFirst = sortedScoresWithLabel.ToList()[0].Key;
+            var scoreValueFirst = sortedScoresWithLabel.ToList()[0].Value;
+            var scoreKeySecond = sortedScoresWithLabel.ToList()[1].Key;
+            var scoreValueSecond = sortedScoresWithLabel.ToList()[1].Value;
+
+            if (scoreKeyFirst == "1")
+            {
+                objContacto.Category = "Positivo";
+            }
+            else
+            {
+                objContacto.Category = "Negativo";
+            }
+
+            
+            Console.WriteLine($"{scoreKeyFirst,-40}{scoreValueFirst,-20}");
+            Console.WriteLine($"{scoreKeySecond,-40}{scoreValueSecond,-20}");
 
             // 1. Guardar datos en la base de datos
             _context.Add(objContacto);
@@ -64,7 +86,7 @@ namespace urbanx.Controllers
                 var response = await _httpClient.PostAsync("https://formspree.io/f/xzzbppog", formContent);
                 if (response.IsSuccessStatusCode)
                 {
-                    ViewData["Message"] = "Mensaje enviado exitosamente";
+                    ViewData["Message"] = "Se registro el contacto y el comentario ah tenido un sentimiento: " + objContacto.Category;
                     // Limpia los datos creando un nuevo objeto Contacto vacío
                     ModelState.Clear();
                     objContacto = new Contacto();
