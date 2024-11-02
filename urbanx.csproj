@@ -35,4 +35,10 @@
     <PackageReference Include="TorchSharp-cpu" Version="0.101.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ML\TextClassification\MLModelTextClassification.mlnet">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
