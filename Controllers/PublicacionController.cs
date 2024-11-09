@@ -10,7 +10,7 @@ namespace urbanx.Controllers
     public class PublicacionController : Controller
     {
         private readonly ILogger<PublicacionController> _logger;
-        private readonly string _facebookToken = "EAANQ567kCnsBO1pVzAALs794oyna6VehwYIDOG3EYWqscUrqk7JBWisVt1G69BoAswi8ZBmCtCbESmF31c60LiNsWCUcEGuUkxTkjFZCeI7SMBfbxUlPRy3SZB7sIJXXpXfS9GiryXN2N5aYjKYPHCTLk3cMQ5N2EGKt8ZCLIlVdeJC32TjoCVZC3wdjR4E8O8gypFaOTIuj779AIPgZDZD"; // Reemplaza con tu token
+        private readonly string _facebookToken = "EAANQ567kCnsBO4Bb2BOJtY2E8rBXiI5oAB3vW4X2LFX2WEA1Nx6NwUTbuXHEwchmphomhyZAYOulglaxAZBnWiJnJjZAcStKvH2qQ9iuIDmzYYaunpyEpXERc99zOZACoSkUDfxl5MA5oSiaIFOUG73lBTvsvmOGVejwFTGY0iWI1VOZCqtoiVW1RZCDeqADSmos1H64F1ucL9SKke5QZDZD"; // Reemplaza con tu token
 
         public PublicacionController(ILogger<PublicacionController> logger)
         {
@@ -28,7 +28,7 @@ namespace urbanx.Controllers
         {
             try
             {
-                var fb = new FacebookClient("EAANQ567kCnsBO99Cf4ey6cf6mrG6VWVReqph8gZCMETaxouyuaFU2SF4oP8iap0dHLXFsVO93oAItyTUu2vhZAEDGXY7JfdaPa6n2wUctS8BJAVl11yVWeqaNe2uKFwZAZA0O8XYLjyQWLObSE6TJeLWZAVdZB5jN88isBDyZB3m7SYyKKZAW1jaYuzG5ONhhDAL7aLyUQHPZAePDRgAziNzanZAoZD"); // Token de la página
+                var fb = new FacebookClient("EAANQ567kCnsBOz24kCdZAYQJynZC2Skv3qdFfPXzuDy4qdlUX77ZB81WcJyHXJCtGcUP2VaUAQhD4dpgtZC1GZB76Kf6dSBZB9HOSjJc8KacyUNrQhC2S9TFIoA9rmK1ZCWf4zoLCgPFuOZBBDiwxVa0ZCCiwe4bYl0SavZC2ILrwHp1VZAinBlHHnFcBo4i4loDhqH2KtbWS9jGBAE5ba7iGfn3xkZD"); // Token de la página
 
                 var parameters = new
                 {
