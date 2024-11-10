@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Admin</title>
+
+    <link rel="stylesheet" href="~/css/menuadmin.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <!-- Tarjeta 1 -->
+            <div class="col-md-3">
+                <div class="card">
+                    <img src="/images/pedidos.png" class="card-img-top" alt="Imagen 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Pedidos</h5>
+                        <a asp-area="" asp-controller="Pedido" asp-action="Index" class="btn btn-primary">Ver más</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Tarjeta 2 -->
+            <div class="col-md-3">
+                <div class="card">
+                    <img src="/images/productos.png" class="card-img-top" alt="Imagen 2">
+                    <div class="card-body">
+                        <h5 class="card-title">Productos</h5>
+                        <a asp-area="" asp-controller="Producto" asp-action="Index" class="btn btn-primary">Ver más</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Tarjeta 3 -->
+            <div class="col-md-3">
+                <div class="card">
+                    <img src="/images/publicaciones.png" class="card-img-top" alt="Imagen 3">
+                    <div class="card-body">
+                        <h5 class="card-title">Publicacion</h5>
+                        <a asp-area="" asp-controller="Publicacion" asp-action="Index" class="btn btn-primary">Ver más</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Tarjeta 4 -->
+            <div class="col-md-3">
+                <div class="card">
+                    <img src="/images/comentario.png" class="card-img-top" alt="Imagen 4">
+                    <div class="card-body">
+                        <h5 class="card-title">Comentarios</h5>
+                        <a asp-area="" asp-controller="Sentimiento" asp-action="Index" class="btn btn-primary">Ver más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

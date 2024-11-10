@@ -1,0 +1,79 @@
+/* Contenedor principal */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+/* Título */
+.container h1 {
+    text-align: center;
+    font-size: 2em;
+    color: #000;
+    margin-bottom: 20px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table thead th {
+    background-color: #7d87f2;
+    color: white;
+    text-align: left;
+    padding: 12px 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.table tbody td {
+    padding: 12px 15px;
+    color: #555;
+    border-bottom: 1px solid #ddd;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+    background-color: #e0e0e0;
+    transition: background-color 0.3s ease;
+}
+
+.button {
+    padding: 10px 15px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+/* Responsivo - Mantenemos el mismo diseño para todas las resoluciones */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .table {
+        font-size: 1em;
+        /* Mantiene el tamaño de fuente */
+    }
+
+    .table thead th,
+    .table tbody td {
+        padding: 10px 12px;
+        /* Solo reduce ligeramente el padding */
+    }
+}

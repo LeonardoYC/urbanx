@@ -12,13 +12,7 @@
     @if (roles.Contains("admin"))
     {
         <li class="itmes_menu">
-            <a asp-area="" asp-controller="Pedido" asp-action="Index">Pedidos</a>
-        </li>
-        <li class="itmes_menu">
-            <a asp-area="" asp-controller="Producto" asp-action="Index">Productos</a>
-        </li>
-        <li class="itmes_menu">
-            <a asp-area="" asp-controller="Publicacion" asp-action="Index">Publicaciones</a>
+            <a asp-area="" asp-controller="MenuAdmin" asp-action="Index">Opciones</a>
         </li>
     }
 
