@@ -1,0 +1,38 @@
+<div class="container d-flex justify-content-center my-4">
+    <div class="card shadow-lg border-0" style="width: 60%;">
+        <div class="card-header text-white text-center" style="background-color: #0F0E17;">
+            <h4 class="mb-0">Crear Publicación</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Publicar" method="post" target="_blank">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="titulo" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Título de la publicación">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="link" class="form-label">Link</label>
+                        <input type="url" class="form-control" id="link" name="link" placeholder="https://example.com">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="comentario" class="form-label">Comentario</label>
+                        <input type="text" class="form-control" id="comentario" name="comentario" placeholder="Comentario adicional">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="imagenUrl" class="form-label">Imagen (URL)</label>
+                        <input type="url" class="form-control" id="imagenUrl" name="imagenUrl" placeholder="https://example.com/image.jpg">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="texto" class="form-label">Texto</label>
+                    <textarea class="form-control" id="texto" name="texto" rows="3" placeholder="Escribe tu publicación..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fab fa-facebook me-2"></i>Publicar en Facebook
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,25 +11,28 @@
     <link rel="shortcut icon" href="images/logo_icon.png">
 
     <!-- Estilos de iconos-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Fuente de Letra-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
 </head>
 <style>
-
     body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
     }
 
-    html, body {
+    html,
+    body {
         height: 100%;
     }
 </style>
+
 <body>
 
     <header>
@@ -41,7 +45,7 @@
 
             <input type="radio" name="slider" id="menu-btn" class="inputs_menu_l">
             <input type="radio" name="slider" id="close-btn" class="inputs_menu_l">
-            
+
             <ul class="enlances_links_1">
                 <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
                 <li class="itmes_menu">
@@ -56,12 +60,15 @@
                 <li class="itmes_menu">
                     <a asp-area="" asp-controller="Contacto" asp-action="Index">Contacto</a>
                 </li>
-                
+
                 <li class="itmes_menu">
                     <a asp-area="" asp-controller="TipoCambio" asp-action="Index">TipoCambio</a>
                 </li>
+                <li class="itmes_menu">
+                    <a asp-area="" asp-controller="Publicacion" asp-action="Index">Publicaciones</a>
+                </li>
                 <partial name="_LoginPartial2" />
-                
+
                 <partial name="_MenuAdminPartial" />
                 <!--li>
                     <a href="#" class="desktop-item">Perfil</a>
@@ -102,13 +109,16 @@
         <div class="contenido-footer">
             <div class="top">
                 <div>
-                    <a asp-area="" asp-controller="Home" asp-action="Index"><img class="logo-details" src="/images/logo_white.png" alt=""></a>
+                    <a asp-area="" asp-controller="Home" asp-action="Index"><img class="logo-details"
+                            src="/images/logo_white.png" alt=""></a>
                 </div>
                 <div class="footer-redes">
-                    <a href="https://www.facebook.com/profile.php?id=61566109572149"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61566109572149"><i
+                            class="fa-brands fa-facebook"></i></a>
                     <a href="https://www.instagram.com/ropaurbana_urbanx/"><i class="fa-brands fa-instagram"></i></a>
                     <a href="https://x.com/UrbanX382160"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="@("https://www.tiktok.com/@urbanx10?is_from_webapp=1&sender_device=pc")"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="@("https://www.tiktok.com/@urbanx10?is_from_webapp=1&sender_device=pc")"><i
+                            class="fa-brands fa-tiktok"></i></a>
                 </div>
             </div>
             <div class="links-boxes">
@@ -135,7 +145,8 @@
         </div>
         <div class="bottom-details">
             <div class="bottom_text">
-                <span class="copyright_text">Copyright &#169; 2024 <a asp-controller="Home" asp-action="Index">UrbanX.</a>Todos los derechos reservados</span>
+                <span class="copyright_text">Copyright &#169; 2024 <a asp-controller="Home"
+                        asp-action="Index">UrbanX.</a>Todos los derechos reservados</span>
                 <span class="policy_terms">
                     <a asp-controller="Politica_privacidad" asp-action="Index">Política de Privacidad</a>
                     <a asp-controller="Terminos_condiciones" asp-action="Index">Términos y Condiciones</a>
@@ -148,12 +159,13 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script>
-        document.getElementById("buscador_icono").addEventListener("click", function() {
-        var cajaBuscador = document.querySelector(".caja_buscador");
-        cajaBuscador.classList.toggle("show"); // Alterna la clase 'show'
-    });
+        document.getElementById("buscador_icono").addEventListener("click", function () {
+            var cajaBuscador = document.querySelector(".caja_buscador");
+            cajaBuscador.classList.toggle("show"); // Alterna la clase 'show'
+        });
 
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
